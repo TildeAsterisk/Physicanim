@@ -2,7 +2,7 @@
 
 ~ 📫 How to reach me: TildeAsterisk@gmail.com
 
-<!--
+
 **TildeAsterisk/TildeAsterisk** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
 <<<<<<< HEAD
@@ -23,7 +23,7 @@ Here are some ideas to get you started:
 - 📫 How to reach me: ...
 - 😄 Pronouns: ...
 - ⚡ Fun fact: ...
--->
+
 ```
 88888888888 d8b 888      888                      d8888          888                    d8b          888      
     888     Y8P 888      888                     d88888          888                    Y8P          888      
