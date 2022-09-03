@@ -4,11 +4,6 @@
 
 
 **TildeAsterisk/TildeAsterisk** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-
-<h1><strong>~ CandyBox, The Original.</strong></h1>
-                <iframe id="cbframe" scrolling="no" frameBorder="0"  src="https://candybox2.github.io/candybox/"></iframe>
-                <p>* When working on creating an ASCII art web game, it is hard not to draw inspiration from CandyBox. Originally released in April 2013. The sequel is programmed in TypeScript, whereas the original is in JavaScript.</p>
-                `
 =======
 Here are some ideas to get you started:
 
@@ -31,3 +26,7 @@ Here are some ideas to get you started:
     888     888 888 Y88b 888 Y8b.           d8888888888      X88 Y88b. Y8b.     888     888      X88 888 "88b 
     888     888 888  "Y88888  "Y8888       d88P     888  88888P'  "Y888 "Y8888  888     888  88888P' 888  888 
 ```
+
+<!-- <h1><strong>~ CandyBox, The Original.</strong></h1>
+                <iframe id="cbframe" scrolling="no" frameBorder="0"  src="https://candybox2.github.io/candybox/"></iframe>
+                <p>* When working on creating an ASCII art web game, it is hard not to draw inspiration from CandyBox. Originally released in April 2013. The sequel is programmed in TypeScript, whereas the original is in JavaScript.</p> -->
