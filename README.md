@@ -5,10 +5,7 @@
 
 **TildeAsterisk/TildeAsterisk** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
-<<<<<<< HEAD
-```
-
-` <h1><strong>~ CandyBox, The Original.</strong></h1>
+<h1><strong>~ CandyBox, The Original.</strong></h1>
                 <iframe id="cbframe" scrolling="no" frameBorder="0"  src="https://candybox2.github.io/candybox/"></iframe>
                 <p>* When working on creating an ASCII art web game, it is hard not to draw inspiration from CandyBox. Originally released in April 2013. The sequel is programmed in TypeScript, whereas the original is in JavaScript.</p>
                 `
