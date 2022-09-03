@@ -1,0 +1,30 @@
+{
+  "name": "com.tildeasterisk.com.tildeasterisk.activeragdollmanager",
+  "version": "1.0.0",
+  "displayName": "Active Ragdoll Manager",
+  "description": "Automatically set up your character as an active ragdoll, rigid body character with procedural animation. Works with Mixamo.",
+  "unity": "2020.3",
+  "unityRelease": "0b5",
+  "documentationUrl": "http://tildeasterisk.com/p/documentaton.html",
+  "changelogUrl": "http://tildeasterisk.com/p/changelog.html",
+  "licensesUrl": "http://tildeasterisk.com/p/licensing.html",
+  "keywords": [
+    "Active",
+    "Ragdoll",
+    "TildeAsterisk",
+    "~*",
+    "arag",
+    "procedural",
+    "animation",
+    "animations",
+    "physics",
+    "character",
+    "humanoid"
+  ],
+  "author": {
+    "name": "Tilde Asterisk",
+    "email": "TildeAsterisk@gmail.com",
+    "url": "http://tildeasterisk.com/"
+  },
+  "type": "tool"
+}
