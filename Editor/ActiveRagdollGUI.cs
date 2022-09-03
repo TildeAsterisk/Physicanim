@@ -1,18 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
-public class ActiveRagdollGUI : MonoBehaviour
+public class ActiveRagdollGUI : EditorWindow
 {
-    // Start is called before the first frame update
-    void Start()
+    [MenuItem("Example/Display simple Window")]
+    static void Initialize()
     {
-        
+        EditorWindowTest window = (ActiveRagdollGUI)EditorWindow.GetWindow(typeof(EditorWindowTest), true, "My Empty Window");
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnGUI()
     {
-        
+        //add stuff here buttons labels editable code
+
     }
 }

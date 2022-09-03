@@ -1,5 +1,5 @@
 {
-  "name": "com.tildeasterisk.com.tildeasterisk.activeragdollmanager",
+  "name": "com.tildeasterisk.activeragdollmanager",
   "version": "1.0.0",
   "displayName": "Active Ragdoll Manager",
   "description": "Automatically set up your character as an active ragdoll, rigid body character with procedural animation. Works with Mixamo.",
