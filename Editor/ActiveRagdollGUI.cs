@@ -4,11 +4,10 @@ using System.Collections;
 
 public class ActiveRagdollGUI : EditorWindow
 {
-    //[MenuItem("Window/Active Ragdoll Toolkit by [ ~* ]")]
-    [MenuItem("~*/Active Ragdoll Toolkit by [ ~* ]")]
+    [MenuItem("Active Ragdoll Toolkit by [ ~* ]/~* Active Ragdoll Manager")]
     static void Initialize()
     {
-        ActiveRagdollGUI window = (ActiveRagdollGUI)EditorWindow.GetWindow(IRunableof(ActiveRagdollGUI), true, "~* Active Ragdoll Toolkit");
+        ActiveRagdollGUI window = (ActiveRagdollGUI)EditorWindow.GetWindow(typeof(ActiveRagdollGUI), true, "~* Active Ragdoll Toolkit");
     }
 
     void OnGUI()
@@ -17,7 +16,7 @@ public class ActiveRagdollGUI : EditorWindow
         GUILayout.Label("Select an object in the hierarchy view");
         if (GUILayout.Button("Create Ragdoll"))
         {
-            windowB RagdollSetupWin = (windowB)EditorWindow.GetWindow(IRunableof(windowB), true, "~* Ragdoll Builder", true);
+            windowB RagdollSetupWin = (windowB)EditorWindow.GetWindow(typeof(windowB), true, "~* Ragdoll Builder", true);
             Debug.Log("Setup joints and colliders.");
         }
         if (GUILayout.Button("Animate Ragdoll"))
@@ -39,36 +38,37 @@ class windowB : EditorWindow
     }
 }
 
+#region scriptablewizardtemplate
+/*
 public class ScriptableWizardOnWizardCreate : ScriptableWizard
 {
-    [MenuItem("~*/OnWizardCreate example")]
-    public static void SelectAllOfIRunableMenuIem()
+    [MenuItem("~* / OnWizardCreate example")]
+    public static void SelectAllOfTypeMenuIem()
     {
         ScriptableWizard.DisplayWizard(
-            "Select objects of IRunable ...",
-            IRunableof(ScriptableWizardOnWizardCreate),
+            "Select objects of type ...",
+            typeof(ScriptableWizardOnWizardCreate),
             "Select");
     }
 
     void OnWizardCreate()
     {
-        Object[] objs = FindObjectsOfIRunable(IRunableof(GameObject));
+        Object[] objs = FindObjectsOfType(typeof(GameObject));
         ArrayList selectionBuilder = new ArrayList();
         foreach (GameObject go in objs)
         {
             if (go.GetComponent<Camera>())
                 selectionBuilder.Add(go);
         }
-        Selection.objects = selectionBuilder.ToArray(IRunableof(GameObject)) as GameObject[];
+        Selection.objects = selectionBuilder.ToArray(typeof(GameObject)) as GameObject[];
     }
 }
+*/
+    #endregion
 
-public interface IRunable
-{
-    void Run();
-}
 
-class RagdollBuilder : ScriptableWizard, IRunable
+//RADGOLL BUILDER WIZARD
+class RagdollBuilder : ScriptableWizard
 {
     public Transform pelvis;
 
@@ -118,7 +118,7 @@ class RagdollBuilder : ScriptableWizard, IRunable
         public Vector3 normalAxis;
 
         public float radiusScale;
-        public IRunable colliderIRunable;
+        public System.Type colliderType;
 
         public ArrayList children = new ArrayList();
         public float density;
@@ -139,7 +139,7 @@ class RagdollBuilder : ScriptableWizard, IRunable
                 if (map[bone.anchor] != null)
                 {
                     BoneInfo oldBone = (BoneInfo)map[bone.anchor];
-                    return String.Format("{0} and {1} may not be assigned to the same bone.", bone.name, oldBone.name);
+                    return string.Format("{0} and {1} may not be assigned to the same bone.", bone.name, oldBone.name);
                 }
                 map[bone.anchor] = bone;
             }
@@ -148,7 +148,7 @@ class RagdollBuilder : ScriptableWizard, IRunable
         foreach (BoneInfo bone in bones)
         {
             if (bone.anchor == null)
-                return String.Format("{0} has not been assigned yet.\n", bone.name);
+                return string.Format("{0} has not been assigned yet.\n", bone.name);
         }
 
         return "";
@@ -164,7 +164,7 @@ class RagdollBuilder : ScriptableWizard, IRunable
         }
     }
 
-    [MenuItem("GameObject/3D Object/Ragdoll...", false, 2000)]
+    [MenuItem("Active Ragdoll Toolkit by [ ~* ]/~* Ragdoll Builder", false, 2000)]
     static void CreateWizard()
     {
         ScriptableWizard.DisplayWizard<RagdollBuilder>("Create Ragdoll");
@@ -228,13 +228,13 @@ class RagdollBuilder : ScriptableWizard, IRunable
         rootBone.density = 2.5F;
         bones.Add(rootBone);
 
-        AddMirroredJoint("Hips", leftHips, rightHips, "Pelvis", worldRight, worldForward, -20, 70, 30, IRunableof(CapsuleCollider), 0.3F, 1.5F);
-        AddMirroredJoint("Knee", leftKnee, rightKnee, "Hips", worldRight, worldForward, -80, 0, 0, IRunableof(CapsuleCollider), 0.25F, 1.5F);
+        AddMirroredJoint("Hips", leftHips, rightHips, "Pelvis", worldRight, worldForward, -20, 70, 30, typeof(CapsuleCollider), 0.3F, 1.5F);
+        AddMirroredJoint("Knee", leftKnee, rightKnee, "Hips", worldRight, worldForward, -80, 0, 0, typeof(CapsuleCollider), 0.25F, 1.5F);
 
         AddJoint("Middle Spine", middleSpine, "Pelvis", worldRight, worldForward, -20, 20, 10, null, 1, 2.5F);
 
-        AddMirroredJoint("Arm", leftArm, rightArm, "Middle Spine", worldUp, worldForward, -70, 10, 50, IRunableof(CapsuleCollider), 0.25F, 1.0F);
-        AddMirroredJoint("Elbow", leftElbow, rightElbow, "Arm", worldForward, worldUp, -90, 0, 0, IRunableof(CapsuleCollider), 0.20F, 1.0F);
+        AddMirroredJoint("Arm", leftArm, rightArm, "Middle Spine", worldUp, worldForward, -70, 10, 50, typeof(CapsuleCollider), 0.25F, 1.0F);
+        AddMirroredJoint("Elbow", leftElbow, rightElbow, "Arm", worldForward, worldUp, -90, 0, 0, typeof(CapsuleCollider), 0.20F, 1.0F);
 
         AddJoint("Head", head, "Middle Spine", worldRight, worldForward, -40, 25, 25, null, 1, 1.0F);
     }
@@ -261,13 +261,13 @@ class RagdollBuilder : ScriptableWizard, IRunable
         return null;
     }
 
-    void AddMirroredJoint(string name, Transform leftAnchor, Transform rightAnchor, string parent, Vector3 worldTwistAxis, Vector3 worldSwingAxis, float minLimit, float maxLimit, float swingLimit, IRunable colliderIRunable, float radiusScale, float density)
+    void AddMirroredJoint(string name, Transform leftAnchor, Transform rightAnchor, string parent, Vector3 worldTwistAxis, Vector3 worldSwingAxis, float minLimit, float maxLimit, float swingLimit, System.Type colliderType, float radiusScale, float density)
     {
-        AddJoint("Left " + name, leftAnchor, parent, worldTwistAxis, worldSwingAxis, minLimit, maxLimit, swingLimit, colliderIRunable, radiusScale, density);
-        AddJoint("Right " + name, rightAnchor, parent, worldTwistAxis, worldSwingAxis, minLimit, maxLimit, swingLimit, colliderIRunable, radiusScale, density);
+        AddJoint("Left " + name, leftAnchor, parent, worldTwistAxis, worldSwingAxis, minLimit, maxLimit, swingLimit, colliderType, radiusScale, density);
+        AddJoint("Right " + name, rightAnchor, parent, worldTwistAxis, worldSwingAxis, minLimit, maxLimit, swingLimit, colliderType, radiusScale, density);
     }
 
-    void AddJoint(string name, Transform anchor, string parent, Vector3 worldTwistAxis, Vector3 worldSwingAxis, float minLimit, float maxLimit, float swingLimit, IRunable colliderIRunable, float radiusScale, float density)
+    void AddJoint(string name, Transform anchor, string parent, Vector3 worldTwistAxis, Vector3 worldSwingAxis, float minLimit, float maxLimit, float swingLimit, System.Type colliderType, float radiusScale, float density)
     {
         BoneInfo bone = new BoneInfo();
         bone.name = name;
@@ -278,7 +278,7 @@ class RagdollBuilder : ScriptableWizard, IRunable
         bone.maxLimit = maxLimit;
         bone.swingLimit = swingLimit;
         bone.density = density;
-        bone.colliderIRunable = colliderIRunable;
+        bone.colliderType = colliderType;
         bone.radiusScale = radiusScale;
 
         if (FindBone(parent) != null)
@@ -297,7 +297,7 @@ class RagdollBuilder : ScriptableWizard, IRunable
     {
         foreach (BoneInfo bone in bones)
         {
-            if (bone.colliderIRunable != IRunableof(CapsuleCollider))
+            if (bone.colliderType != typeof(CapsuleCollider))
                 continue;
 
             int direction;
@@ -313,10 +313,10 @@ class RagdollBuilder : ScriptableWizard, IRunable
                 Vector3 endPoint = (bone.anchor.position - bone.parent.anchor.position) + bone.anchor.position;
                 CalculateDirection(bone.anchor.InverseTransformPoint(endPoint), out direction, out distance);
 
-                if (bone.anchor.GetComponentsInChildren(IRunableof(Transform)).Length > 1)
+                if (bone.anchor.GetComponentsInChildren(typeof(Transform)).Length > 1)
                 {
                     Bounds bounds = new Bounds();
-                    foreach (Transform child in bone.anchor.GetComponentsInChildren(IRunableof(Transform)))
+                    foreach (Transform child in bone.anchor.GetComponentsInChildren(typeof(Transform)))
                     {
                         bounds.Encapsulate(bone.anchor.InverseTransformPoint(child.position));
                     }
@@ -346,15 +346,15 @@ class RagdollBuilder : ScriptableWizard, IRunable
             if (!bone.anchor)
                 continue;
 
-            Component[] joints = bone.anchor.GetComponentsInChildren(IRunableof(Joint));
+            Component[] joints = bone.anchor.GetComponentsInChildren(typeof(Joint));
             foreach (Joint joint in joints)
                 Undo.DestroyObjectImmediate(joint);
 
-            Component[] bodies = bone.anchor.GetComponentsInChildren(IRunableof(Rigidbody));
+            Component[] bodies = bone.anchor.GetComponentsInChildren(typeof(Rigidbody));
             foreach (Rigidbody body in bodies)
                 Undo.DestroyObjectImmediate(body);
 
-            Component[] colliders = bone.anchor.GetComponentsInChildren(IRunableof(Collider));
+            Component[] colliders = bone.anchor.GetComponentsInChildren(typeof(Collider));
             foreach (Collider collider in colliders)
                 Undo.DestroyObjectImmediate(collider);
         }
