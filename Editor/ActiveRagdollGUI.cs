@@ -14,16 +14,29 @@ public class ActiveRagdollGUI : EditorWindow
     {
         //add stuff here buttons labels editable code
         GUILayout.Label("Select an object in the hierarchy view");
-        if (GUILayout.Button("Create Ragdoll"))
-        {
-            windowB RagdollSetupWin = (windowB)EditorWindow.GetWindow(typeof(windowB), true, "~* Ragdoll Builder", true);
-            Debug.Log("Setup joints and colliders.");
-        }
         if (GUILayout.Button("Animate Ragdoll"))
         {
             Debug.Log("Start Animating Ragdoll");
         }
+
+        if (GUILayout.Button("Open new editor window."))
+        {
+            windowB RagdollSetupWin = (windowB)EditorWindow.GetWindow(typeof(windowB), true, "~* Ragdoll Builder", true);
+            Debug.Log("Setup joints and colliders.");
+        }
     }
+
+    [MenuItem("Active Ragdoll Toolkit by [ ~* ]/~* Show selected objects")]
+    static void ItemProcessor()
+    {
+        Transform[] transforms = Selection.transforms;
+        foreach (Transform tf in transforms)
+        {
+            Debug.Log(tf.gameObject.name);
+            //tf.gameObject.AddComponent(typeof(SphereCollider));
+        }
+    }
+
 }
 
 class windowB : EditorWindow
@@ -164,7 +177,7 @@ class RagdollBuilder : ScriptableWizard
         }
     }
 
-    [MenuItem("Active Ragdoll Toolkit by [ ~* ]/~* Ragdoll Builder", false, 2000)]
+    [MenuItem("Active Ragdoll Toolkit by [ ~* ]/Ragdoll Builder", false, 2000)]
     static void CreateWizard()
     {
         ScriptableWizard.DisplayWizard<RagdollBuilder>("Create Ragdoll");
@@ -239,6 +252,7 @@ class RagdollBuilder : ScriptableWizard
         AddJoint("Head", head, "Middle Spine", worldRight, worldForward, -40, 25, 25, null, 1, 1.0F);
     }
 
+    //~~~~~~~~~~~~~ C R E A T E  R A G D O L L  B U T T O N ~~~~~~~~~~~~~~~~
     void OnWizardCreate()
     {
         Cleanup();
@@ -249,6 +263,8 @@ class RagdollBuilder : ScriptableWizard
         BuildBodies();
         BuildJoints();
         CalculateMass();
+
+        SetupJointMatch();
     }
 
     BoneInfo FindBone(string name)
@@ -583,5 +599,12 @@ class RagdollBuilder : ScriptableWizard
         else
             center[direction] = radius;
         sphere.center = center;
+    }
+    
+    void SetupJointMatch()
+    {
+        Debug.Log("~* Finished creating ragdoll." + pelvis.transform.root.name);
+        pelvis.transform.root.gameObject.AddComponent(typeof(JointMatch));
+        Debug.Log("Joint Match class added");
     }
 }
