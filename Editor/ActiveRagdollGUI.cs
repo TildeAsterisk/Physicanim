@@ -8,7 +8,7 @@ public class ActiveRagdollGUI : EditorWindow
     [MenuItem("~*/Active Ragdoll Toolkit by [ ~* ]")]
     static void Initialize()
     {
-        ActiveRagdollGUI window = (ActiveRagdollGUI)EditorWindow.GetWindow(typeof(ActiveRagdollGUI), true, "~* Active Ragdoll Toolkit");
+        ActiveRagdollGUI window = (ActiveRagdollGUI)EditorWindow.GetWindow(IRunableof(ActiveRagdollGUI), true, "~* Active Ragdoll Toolkit");
     }
 
     void OnGUI()
@@ -17,7 +17,7 @@ public class ActiveRagdollGUI : EditorWindow
         GUILayout.Label("Select an object in the hierarchy view");
         if (GUILayout.Button("Create Ragdoll"))
         {
-            windowB RagdollSetupWin = (windowB)EditorWindow.GetWindow(typeof(windowB), true, "~* Ragdoll Builder", true);
+            windowB RagdollSetupWin = (windowB)EditorWindow.GetWindow(IRunableof(windowB), true, "~* Ragdoll Builder", true);
             Debug.Log("Setup joints and colliders.");
         }
         if (GUILayout.Button("Animate Ragdoll"))
@@ -42,28 +42,33 @@ class windowB : EditorWindow
 public class ScriptableWizardOnWizardCreate : ScriptableWizard
 {
     [MenuItem("~*/OnWizardCreate example")]
-    public static void SelectAllOfTypeMenuIem()
+    public static void SelectAllOfIRunableMenuIem()
     {
         ScriptableWizard.DisplayWizard(
-            "Select objects of type ...",
-            typeof(ScriptableWizardOnWizardCreate),
+            "Select objects of IRunable ...",
+            IRunableof(ScriptableWizardOnWizardCreate),
             "Select");
     }
 
     void OnWizardCreate()
     {
-        Object[] objs = FindObjectsOfType(typeof(GameObject));
+        Object[] objs = FindObjectsOfIRunable(IRunableof(GameObject));
         ArrayList selectionBuilder = new ArrayList();
         foreach (GameObject go in objs)
         {
             if (go.GetComponent<Camera>())
                 selectionBuilder.Add(go);
         }
-        Selection.objects = selectionBuilder.ToArray(typeof(GameObject)) as GameObject[];
+        Selection.objects = selectionBuilder.ToArray(IRunableof(GameObject)) as GameObject[];
     }
 }
 
-class RagdollBuilder : ScriptableWizard
+public interface IRunable
+{
+    void Run();
+}
+
+class RagdollBuilder : ScriptableWizard, IRunable
 {
     public Transform pelvis;
 
@@ -113,7 +118,7 @@ class RagdollBuilder : ScriptableWizard
         public Vector3 normalAxis;
 
         public float radiusScale;
-        public Type colliderType;
+        public IRunable colliderIRunable;
 
         public ArrayList children = new ArrayList();
         public float density;
@@ -223,13 +228,13 @@ class RagdollBuilder : ScriptableWizard
         rootBone.density = 2.5F;
         bones.Add(rootBone);
 
-        AddMirroredJoint("Hips", leftHips, rightHips, "Pelvis", worldRight, worldForward, -20, 70, 30, typeof(CapsuleCollider), 0.3F, 1.5F);
-        AddMirroredJoint("Knee", leftKnee, rightKnee, "Hips", worldRight, worldForward, -80, 0, 0, typeof(CapsuleCollider), 0.25F, 1.5F);
+        AddMirroredJoint("Hips", leftHips, rightHips, "Pelvis", worldRight, worldForward, -20, 70, 30, IRunableof(CapsuleCollider), 0.3F, 1.5F);
+        AddMirroredJoint("Knee", leftKnee, rightKnee, "Hips", worldRight, worldForward, -80, 0, 0, IRunableof(CapsuleCollider), 0.25F, 1.5F);
 
         AddJoint("Middle Spine", middleSpine, "Pelvis", worldRight, worldForward, -20, 20, 10, null, 1, 2.5F);
 
-        AddMirroredJoint("Arm", leftArm, rightArm, "Middle Spine", worldUp, worldForward, -70, 10, 50, typeof(CapsuleCollider), 0.25F, 1.0F);
-        AddMirroredJoint("Elbow", leftElbow, rightElbow, "Arm", worldForward, worldUp, -90, 0, 0, typeof(CapsuleCollider), 0.20F, 1.0F);
+        AddMirroredJoint("Arm", leftArm, rightArm, "Middle Spine", worldUp, worldForward, -70, 10, 50, IRunableof(CapsuleCollider), 0.25F, 1.0F);
+        AddMirroredJoint("Elbow", leftElbow, rightElbow, "Arm", worldForward, worldUp, -90, 0, 0, IRunableof(CapsuleCollider), 0.20F, 1.0F);
 
         AddJoint("Head", head, "Middle Spine", worldRight, worldForward, -40, 25, 25, null, 1, 1.0F);
     }
@@ -256,13 +261,13 @@ class RagdollBuilder : ScriptableWizard
         return null;
     }
 
-    void AddMirroredJoint(string name, Transform leftAnchor, Transform rightAnchor, string parent, Vector3 worldTwistAxis, Vector3 worldSwingAxis, float minLimit, float maxLimit, float swingLimit, Type colliderType, float radiusScale, float density)
+    void AddMirroredJoint(string name, Transform leftAnchor, Transform rightAnchor, string parent, Vector3 worldTwistAxis, Vector3 worldSwingAxis, float minLimit, float maxLimit, float swingLimit, IRunable colliderIRunable, float radiusScale, float density)
     {
-        AddJoint("Left " + name, leftAnchor, parent, worldTwistAxis, worldSwingAxis, minLimit, maxLimit, swingLimit, colliderType, radiusScale, density);
-        AddJoint("Right " + name, rightAnchor, parent, worldTwistAxis, worldSwingAxis, minLimit, maxLimit, swingLimit, colliderType, radiusScale, density);
+        AddJoint("Left " + name, leftAnchor, parent, worldTwistAxis, worldSwingAxis, minLimit, maxLimit, swingLimit, colliderIRunable, radiusScale, density);
+        AddJoint("Right " + name, rightAnchor, parent, worldTwistAxis, worldSwingAxis, minLimit, maxLimit, swingLimit, colliderIRunable, radiusScale, density);
     }
 
-    void AddJoint(string name, Transform anchor, string parent, Vector3 worldTwistAxis, Vector3 worldSwingAxis, float minLimit, float maxLimit, float swingLimit, Type colliderType, float radiusScale, float density)
+    void AddJoint(string name, Transform anchor, string parent, Vector3 worldTwistAxis, Vector3 worldSwingAxis, float minLimit, float maxLimit, float swingLimit, IRunable colliderIRunable, float radiusScale, float density)
     {
         BoneInfo bone = new BoneInfo();
         bone.name = name;
@@ -273,7 +278,7 @@ class RagdollBuilder : ScriptableWizard
         bone.maxLimit = maxLimit;
         bone.swingLimit = swingLimit;
         bone.density = density;
-        bone.colliderType = colliderType;
+        bone.colliderIRunable = colliderIRunable;
         bone.radiusScale = radiusScale;
 
         if (FindBone(parent) != null)
@@ -292,7 +297,7 @@ class RagdollBuilder : ScriptableWizard
     {
         foreach (BoneInfo bone in bones)
         {
-            if (bone.colliderType != typeof(CapsuleCollider))
+            if (bone.colliderIRunable != IRunableof(CapsuleCollider))
                 continue;
 
             int direction;
@@ -308,10 +313,10 @@ class RagdollBuilder : ScriptableWizard
                 Vector3 endPoint = (bone.anchor.position - bone.parent.anchor.position) + bone.anchor.position;
                 CalculateDirection(bone.anchor.InverseTransformPoint(endPoint), out direction, out distance);
 
-                if (bone.anchor.GetComponentsInChildren(typeof(Transform)).Length > 1)
+                if (bone.anchor.GetComponentsInChildren(IRunableof(Transform)).Length > 1)
                 {
                     Bounds bounds = new Bounds();
-                    foreach (Transform child in bone.anchor.GetComponentsInChildren(typeof(Transform)))
+                    foreach (Transform child in bone.anchor.GetComponentsInChildren(IRunableof(Transform)))
                     {
                         bounds.Encapsulate(bone.anchor.InverseTransformPoint(child.position));
                     }
@@ -341,15 +346,15 @@ class RagdollBuilder : ScriptableWizard
             if (!bone.anchor)
                 continue;
 
-            Component[] joints = bone.anchor.GetComponentsInChildren(typeof(Joint));
+            Component[] joints = bone.anchor.GetComponentsInChildren(IRunableof(Joint));
             foreach (Joint joint in joints)
                 Undo.DestroyObjectImmediate(joint);
 
-            Component[] bodies = bone.anchor.GetComponentsInChildren(typeof(Rigidbody));
+            Component[] bodies = bone.anchor.GetComponentsInChildren(IRunableof(Rigidbody));
             foreach (Rigidbody body in bodies)
                 Undo.DestroyObjectImmediate(body);
 
-            Component[] colliders = bone.anchor.GetComponentsInChildren(typeof(Collider));
+            Component[] colliders = bone.anchor.GetComponentsInChildren(IRunableof(Collider));
             foreach (Collider collider in colliders)
                 Undo.DestroyObjectImmediate(collider);
         }
