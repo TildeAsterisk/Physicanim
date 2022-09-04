@@ -2,7 +2,7 @@ Active Ragdoll Character Toolkit by Tilde Asterisk ~*
 =======
 Turn humanoid character models into active ragdolls, with physics driven procedural animation and collisions.
 
-* ⚡ Fun fact: Ragdoll physics is a type of procedural animation used by physics engines, which is often used as a replacement for traditional static death animations in video games and animated films. As computers increased in power, it became possible to do limited real-time physical simulations, which made death animations more realistic.
+.
 
 .
 
@@ -18,3 +18,4 @@ Turn humanoid character models into active ragdolls, with physics driven procedu
     888     888 888 Y88b 888 Y8b.           d8888888888      X88 Y88b. Y8b.     888     888      X88 888 "88b 
     888     888 888  "Y88888  "Y8888       d88P     888  88888P'  "Y888 "Y8888  888     888  88888P' 888  888 
 ```
+<sub>⚡ Fun fact: Ragdoll physics is a type of procedural animation used by physics engines, which is often used as a replacement for traditional static death animations in video games and animated films.</sub>
