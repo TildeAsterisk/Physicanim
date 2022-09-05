@@ -1,7 +1,7 @@
 {
-  "name": "com.tildeasterisk.activeragdollmanager",
+  "name": "com.tildeasterisk.activeragdollsystem",
   "version": "1.0.0",
-  "displayName": "Active Ragdoll Manager",
+  "displayName": "Active Ragdoll System",
   "description": "Automatically set up your character as an active ragdoll, rigid body character with procedural animation. Works with Mixamo.",
   "unity": "2020.3",
   "unityRelease": "0b5",
