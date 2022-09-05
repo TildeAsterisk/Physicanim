@@ -98,7 +98,7 @@ class ActiveRagdollBuilder : ScriptableWizard
         }
     }
 
-    [MenuItem("Window/Active Ragdoll Toolkit by [ ~* ]/Active-Ragdoll Builder", false, 2000)]
+    [MenuItem("Window/Active Ragdoll Builder by [ ~* ]", false, 2000)]
     static void CreateWizard()
     {
         ScriptableWizard.DisplayWizard<ActiveRagdollBuilder>("Create Ragdoll");
@@ -528,11 +528,11 @@ class ActiveRagdollBuilder : ScriptableWizard
         //Called at the end of CreateWizard(), after radgoll has been built. 
         pelvis.transform.root.gameObject.AddComponent(typeof(JointMatch));  //Joint Match class added to root object
         JointMatch jm = pelvis.transform.root.GetComponent<JointMatch>();
-
+        
         int bi = 0; //bi is the bone index.
         foreach (BoneInfo bone in bones)
         {
-            jm.ragBones[bi] = bone.anchor;
+            jm.ragdollBones[bi] = bone.anchor;
             bi++;
         }
         jm.ragdollBones[11] = leftFoot;
