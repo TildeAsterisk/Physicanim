@@ -328,16 +328,16 @@ class ActiveRagdollBuilder : ScriptableWizard
             limit.contactDistance = 0; // default to zero, which automatically sets contact distance.
 
             limit.limit = bone.minLimit;
-            joint.lowTwistLimit = limit;
+            //joint.lowTwistLimit = limit;
 
             limit.limit = bone.maxLimit;
-            joint.highTwistLimit = limit;
+            //joint.highTwistLimit = limit;
 
             limit.limit = bone.swingLimit;
-            joint.swing1Limit = limit;
+            //joint.swing1Limit = limit;
 
             limit.limit = 0;
-            joint.swing2Limit = limit;
+            //joint.swing2Limit = limit;
         }
     }
 
