@@ -1,3 +1,16 @@
 {
-	"name": "tildeasterisk.activeragdollsystem.Editor"
+    "name": "tildeasterisk.activeragdollsystem.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:013c4809f8417fc4cb0603f242218ad8"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
