@@ -2,86 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
-public class ActiveRagdollGUI : EditorWindow
-{
-    [MenuItem("Active Ragdoll Toolkit by [ ~* ]/~* Active Ragdoll Manager")]
-    static void Initialize()
-    {
-        ActiveRagdollGUI window = (ActiveRagdollGUI)EditorWindow.GetWindow(typeof(ActiveRagdollGUI), true, "~* Active Ragdoll Toolkit");
-    }
-
-    void OnGUI()
-    {
-        //add stuff here buttons labels editable code
-        GUILayout.Label("Select an object in the hierarchy view");
-        if (GUILayout.Button("Animate Ragdoll"))
-        {
-            Debug.Log("Start Animating Ragdoll");
-        }
-
-        if (GUILayout.Button("Open new editor window."))
-        {
-            windowB RagdollSetupWin = (windowB)EditorWindow.GetWindow(typeof(windowB), true, "~* Ragdoll Builder", true);
-            Debug.Log("Setup joints and colliders.");
-        }
-    }
-
-    [MenuItem("Active Ragdoll Toolkit by [ ~* ]/~* Show selected objects")]
-    static void ItemProcessor()
-    {
-        Transform[] transforms = Selection.transforms;
-        foreach (Transform tf in transforms)
-        {
-            Debug.Log(tf.gameObject.name);
-            //tf.gameObject.AddComponent(typeof(SphereCollider));
-        }
-    }
-
-}
-
-class windowB : EditorWindow
-{
-    void OnGUI()
-    {
-        GUILayout.Label("Select an object in the hierarchy view");
-        if (GUILayout.Button("make thingy"))
-        {
-            Debug.Log("okayu");
-        }
-    }
-}
-
-#region scriptablewizardtemplate
-/*
-public class ScriptableWizardOnWizardCreate : ScriptableWizard
-{
-    [MenuItem("~* / OnWizardCreate example")]
-    public static void SelectAllOfTypeMenuIem()
-    {
-        ScriptableWizard.DisplayWizard(
-            "Select objects of type ...",
-            typeof(ScriptableWizardOnWizardCreate),
-            "Select");
-    }
-
-    void OnWizardCreate()
-    {
-        Object[] objs = FindObjectsOfType(typeof(GameObject));
-        ArrayList selectionBuilder = new ArrayList();
-        foreach (GameObject go in objs)
-        {
-            if (go.GetComponent<Camera>())
-                selectionBuilder.Add(go);
-        }
-        Selection.objects = selectionBuilder.ToArray(typeof(GameObject)) as GameObject[];
-    }
-}
-*/
-    #endregion
-
-
-//RADGOLL BUILDER WIZARD
-class RagdollBuilder : ScriptableWizard
+class ActiveRagdollBuilder : ScriptableWizard
 {
     public Transform pelvis;
 
@@ -177,10 +98,10 @@ class RagdollBuilder : ScriptableWizard
         }
     }
 
-    [MenuItem("Active Ragdoll Toolkit by [ ~* ]/Ragdoll Builder", false, 2000)]
+    [MenuItem("Window/Active Ragdoll Toolkit by [ ~* ]/Active-Ragdoll Builder", false, 2000)]
     static void CreateWizard()
     {
-        ScriptableWizard.DisplayWizard<RagdollBuilder>("Create Ragdoll");
+        ScriptableWizard.DisplayWizard<ActiveRagdollBuilder>("Create Ragdoll");
     }
 
     void DecomposeVector(out Vector3 normalCompo, out Vector3 tangentCompo, Vector3 outwardDir, Vector3 outwardNormal)
@@ -601,10 +522,107 @@ class RagdollBuilder : ScriptableWizard
         sphere.center = center;
     }
     
+    //Add JointMatch script to the root object of character. Update JointMatch with an array of the bones selected in Ragdoll Builder.
     void SetupJointMatch()
     {
-        Debug.Log("~* Finished creating ragdoll." + pelvis.transform.root.name);
-        pelvis.transform.root.gameObject.AddComponent(typeof(JointMatch));
-        Debug.Log("Joint Match class added");
+        //Called at the end of CreateWizard(), after radgoll has been built. 
+        pelvis.transform.root.gameObject.AddComponent(typeof(JointMatch));  //Joint Match class added to root object
+        JointMatch jm = pelvis.transform.root.GetComponent<JointMatch>();
+
+        int bi = 0; //bi is the bone index.
+        foreach (BoneInfo bone in bones)
+        {
+            jm.ragBones[bi] = bone.anchor;
+            bi++;
+        }
+        jm.ragdollBones[11] = leftFoot;
+        jm.ragdollBones[12] = rightFoot;
+
+        bi += 2;    //Doesnt need to be done. We dont need the bone index anymore.
     }
 }
+
+
+//Below are windows that use EditorWindow and ScriptableWizard.
+
+#region TempTestEditorWindows
+/*
+public class ActiveRagdollGUI : EditorWindow
+{
+    [MenuItem("Window/Active Ragdoll Toolkit by [ ~* ]/~* Active Ragdoll Manager")]
+    static void Initialize()
+    {
+        ActiveRagdollGUI window = (ActiveRagdollGUI)EditorWindow.GetWindow(typeof(ActiveRagdollGUI), true, "~* Active Ragdoll Toolkit");
+    }
+
+    void OnGUI()
+    {
+        //add stuff here buttons labels editable code
+        GUILayout.Label("Select an object in the hierarchy view");
+        if (GUILayout.Button("Animate Ragdoll"))
+        {
+            Debug.Log("Start Animating Ragdoll");
+        }
+
+        if (GUILayout.Button("Open new editor window."))
+        {
+            windowB RagdollSetupWin = (windowB)EditorWindow.GetWindow(typeof(windowB), true, "~* Ragdoll Builder", true);
+            Debug.Log("Setup joints and colliders.");
+        }
+    }
+
+    //When opening the window in the editor, the selected object in the heirarchy is printed in the console
+    
+    [MenuItem("Active Ragdoll Toolkit by [ ~* ]/~* Show selected objects")]
+    static void PrintSelectedObject()
+    {
+        Transform[] transforms = Selection.transforms;
+        foreach (Transform tf in transforms)
+        {
+            Debug.Log(tf.gameObject.name);
+        }
+    }
+
+}
+
+class windowB : EditorWindow
+{
+    void OnGUI()
+    {
+        GUILayout.Label("Select an object in the hierarchy view");
+        if (GUILayout.Button("make thingy"))
+        {
+            Debug.Log("okayu");
+        }
+    }
+}
+*/
+#endregion
+
+#region scriptablewizardtemplate
+/*
+public class ScriptableWizardOnWizardCreate : ScriptableWizard
+{
+    [MenuItem("~* / OnWizardCreate example")]
+    public static void SelectAllOfTypeMenuIem()
+    {
+        ScriptableWizard.DisplayWizard(
+            "Select objects of type ...",
+            typeof(ScriptableWizardOnWizardCreate),
+            "Select");
+    }
+
+    void OnWizardCreate()
+    {
+        Object[] objs = FindObjectsOfType(typeof(GameObject));
+        ArrayList selectionBuilder = new ArrayList();
+        foreach (GameObject go in objs)
+        {
+            if (go.GetComponent<Camera>())
+                selectionBuilder.Add(go);
+        }
+        Selection.objects = selectionBuilder.ToArray(typeof(GameObject)) as GameObject[];
+    }
+}
+*/
+#endregion
