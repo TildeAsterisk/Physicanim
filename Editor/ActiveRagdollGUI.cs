@@ -41,7 +41,7 @@ class ActiveRagdollBuilder : ScriptableWizard
         public string name;
 
         public Transform anchor;
-        public CharacterJoint joint;
+        public ConfigurableJoint joint;
         public BoneInfo parent;
 
         public float minLimit;
@@ -313,12 +313,12 @@ class ActiveRagdollBuilder : ScriptableWizard
             if (bone.parent == null)
                 continue;
 
-            CharacterJoint joint = Undo.AddComponent<CharacterJoint>(bone.anchor.gameObject);
+            ConfigurableJoint joint = Undo.AddComponent<ConfigurableJoint>(bone.anchor.gameObject);
             bone.joint = joint;
 
             // Setup connection and axis
             joint.axis = CalculateDirectionAxis(bone.anchor.InverseTransformDirection(bone.axis));
-            joint.swingAxis = CalculateDirectionAxis(bone.anchor.InverseTransformDirection(bone.normalAxis));
+            //joint.swingAxis = CalculateDirectionAxis(bone.anchor.InverseTransformDirection(bone.normalAxis));
             joint.anchor = Vector3.zero;
             joint.connectedBody = bone.parent.anchor.GetComponent<Rigidbody>();
             joint.enablePreprocessing = false; // turn off to handle degenerated scenarios, like spawning inside geometry.
