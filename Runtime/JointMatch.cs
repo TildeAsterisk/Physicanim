@@ -5,7 +5,7 @@ using UnityEngine;
 public class JointMatch : MonoBehaviour
 {
     public Transform[] ragdollBones = new Transform[13];
-    public ConfigurableJoint[] cJoints;
+    public ConfigurableJoint[] cJoints = new ConfigurableJoint[10];
     public Transform[] animBones;
     private Quaternion[] initialJointRots;
     public float[,] initialJointSprings;
@@ -20,6 +20,21 @@ public class JointMatch : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //integrate ActiveRagdollGUI
+        int cjindex = 0;
+        foreach (Transform bone in ragdollBones)
+        {
+            ConfigurableJoint cj = bone.GetComponent<ConfigurableJoint>();
+            if ( cj != null)
+            {
+                cJoints[cjindex] = cj;
+                cjindex++;
+            }
+        }
+        animBones = ragdollBones;
+        //End of initialAragGUI integration
+
+
         Transform[] initialaj = animBones;
         ConfigurableJoint[] initialcj = cJoints;
 
