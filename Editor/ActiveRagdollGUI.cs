@@ -535,28 +535,31 @@ class ActiveRagdollBuilder : ScriptableWizard
         //Called at the end of CreateWizard(), after radgoll has been built. 
         pelvis.transform.root.gameObject.AddComponent(typeof(JointMatch));  //Joint Match class added to root object
         JointMatch jm = pelvis.transform.root.GetComponent<JointMatch>();
-        
+
         int bi = 0; //bi is the bone index.
         foreach (BoneInfo bone in bones)
         {
-            //Setup RagdollBones array in JointMatch script
-            jm.ragdollBones[bi] = bone.anchor;
+            jm.ragdollBones[bi] = bone.anchor;  //Setup RagdollBones array in JointMatch script
 
-            //Set AnimBones to find the bone of the same name under the duplicate char model (Static Animator).
-            Transform tempSABone = sAnimObj.transform.Find(bone.anchor.name);
-            //FIX: SEARCH ALL CHILDREN OF sAnimObj to find the bone.
-            if (tempSABone != null){
-                jm.animBones[bi] = tempSABone;
-                Debug.Log(bone.anchor.name+" bone found on Static Animator");
+            //Setup animBones array in JointMatch script
+            Transform sAnimHips = sAnimObj.transform.Find(pelvis.name);
+            if(sAnimHips!=null)
+            {
+                foreach(Transform tf in sAnimHips.GetComponentsInChildren<Transform>()){
+                    if (tf.name == bone.anchor.name){
+                        jm.animBones[bi] = tf; //add to JointMatch.animBones
+                        Debug.Log(tf.name + " added to the animBones array in JointMatch.");
+                    }
+                }
             }
-            else{
-                Debug.Log(bone.anchor.name + " could not be found on the StaticAnimator.");
-            }
+            else{ Debug.Log("The root of the skeleton (e.g.: pelvis/hips) could not be found."); }
 
             bi++;
         }
         jm.ragdollBones[11] = leftFoot;
         jm.ragdollBones[12] = rightFoot;
+        jm.animBones[11] = leftFoot;
+        jm.animBones[12] = rightFoot;
         bi += 2;    //Doesnt need to be done. We dont need the bone index anymore.
     }
 
