@@ -32,7 +32,19 @@ public class JointMatch : MonoBehaviour
                 cjindex++;
             }
         }
+        lFootAnim = ragdollBones[11];
+        rFootAnim = ragdollBones[12];
+        lFootTarget = ragdollBones[11];
+        rFootTarget = ragdollBones[12];
+        hips = ragdollBones[0];
+        /*
         animBones = ragdollBones;
+
+        jm.rFootAnim = leftFoot;
+        jm.lFootAnim = leftFoot;
+        jm.rFootTarget = rightFoot;
+        jm.lFootTarget = leftFoot;
+        */
 
         //End of initialAragGUI integration
 
@@ -49,7 +61,7 @@ public class JointMatch : MonoBehaviour
         initialJointSprings = new float[cJoints.Length,2];
         StoreInitialSprings();
 
-        //UpdateFeetTargets(); NO IK YET
+        UpdateFeetTargets(); //NO IK YET
     }
 
     void Update()
@@ -63,15 +75,15 @@ public class JointMatch : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        //UpdateJointTargets(); //WHEN ENABLED, NO ANIM COPY
+        UpdateJointTargets(); //WHEN ENABLED, NO ANIM COPY
 
-        //UpdateFeetTargets(); //NO IK YET
+        UpdateFeetTargets(); //NO IK YET
     }
 
     //Matching the rotation of each cj to the animated bones.
     private void UpdateJointTargets()
     {
-        for (int i = 0; i < cJoints.Length; i++)
+        for (int i = 0; i < cJoints.Length; i++)    //For each joint in cJoints, set target rotation to that of anim bone
         {
             ConfigurableJointExtensions.SetTargetRotationLocal(cJoints[i], animBones[i + 1].localRotation, initialJointRots[i]);
         }
