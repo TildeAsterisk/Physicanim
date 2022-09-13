@@ -5,8 +5,8 @@ using UnityEngine;
 public class JointMatch : MonoBehaviour
 {
     public Transform[] ragdollBones = new Transform[13];
-    public ConfigurableJoint[] cJoints = new ConfigurableJoint[10];
-    public Transform[] animBones = new Transform[13];
+    public ConfigurableJoint[] cJoints = new ConfigurableJoint[11];
+    public Transform[] animBones = new Transform[11];
     private Quaternion[] initialJointRots;
     public float jointSpringsStrength;
     public float[,] initialJointSprings;

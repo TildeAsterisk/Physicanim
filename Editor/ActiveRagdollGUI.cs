@@ -313,7 +313,7 @@ class ActiveRagdollBuilder : ScriptableWizard
     {
         foreach (BoneInfo bone in bones)
         {
-            if (bone.parent == null)
+            if (bone.parent == null && bone.name != "pelvis")
                 continue;
 
             ConfigurableJoint joint = Undo.AddComponent<ConfigurableJoint>(bone.anchor.gameObject);
@@ -543,7 +543,7 @@ class ActiveRagdollBuilder : ScriptableWizard
             
             //Add ConfigurableJoint on each bone to the cJoints array.
             ConfigurableJoint cj = bone.anchor.GetComponent<ConfigurableJoint>();
-            if(cj != null){ jm.cJoints[bi-1] = cj; }
+            if(cj != null){ jm.cJoints[bi] = cj; }
 
             //Setup animBones array in JointMatch script
             Transform sAnimHips = sAnimObj.transform.Find(pelvis.name);
