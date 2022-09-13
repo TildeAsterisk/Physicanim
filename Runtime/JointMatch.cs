@@ -21,32 +21,12 @@ public class JointMatch : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //integrate ActiveRagdollGUI
-        int cjindex = 0;
-        foreach (Transform bone in ragdollBones)
-        {
-            ConfigurableJoint cj = bone.GetComponent<ConfigurableJoint>();
-            if ( cj != null)
-            {
-                cJoints[cjindex] = cj;
-                cjindex++;
-            }
-        }
+        //Assign references on startup using ragdollBones array initialised on RagdollBuilder Create.
         lFootAnim = ragdollBones[11];
         rFootAnim = ragdollBones[12];
         lFootTarget = ragdollBones[11];
         rFootTarget = ragdollBones[12];
         hips = ragdollBones[0];
-        /*
-        animBones = ragdollBones;
-
-        jm.rFootAnim = leftFoot;
-        jm.lFootAnim = leftFoot;
-        jm.rFootTarget = rightFoot;
-        jm.lFootTarget = leftFoot;
-        */
-
-        //End of initialAragGUI integration
 
 
         Transform[] initialaj = animBones;
