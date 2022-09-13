@@ -6,7 +6,7 @@ public class JointMatch : MonoBehaviour
 {
     public Transform[] ragdollBones = new Transform[13];
     public ConfigurableJoint[] cJoints = new ConfigurableJoint[10];
-    public Transform[] animBones;
+    public Transform[] animBones = new Transform[13];
     private Quaternion[] initialJointRots;
     public float[,] initialJointSprings;
 
@@ -32,6 +32,9 @@ public class JointMatch : MonoBehaviour
             }
         }
         animBones = ragdollBones;
+
+        //~* TO DO: setup animBones from StaticAnimator
+
         //End of initialAragGUI integration
 
 
@@ -92,7 +95,7 @@ public class JointMatch : MonoBehaviour
         {
             JointDrive jDrivex = cJoints[i].angularXDrive;
             JointDrive jDriveyz = cJoints[i].angularYZDrive;
-            initialJointSprings[i,0] = jDrivex.positionSpring;
+            initialJointSprings[i, 0] = jDrivex.positionSpring;
             initialJointSprings[i, 1] = jDriveyz.positionSpring;
         }
     }

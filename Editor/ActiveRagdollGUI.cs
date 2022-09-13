@@ -173,9 +173,11 @@ class ActiveRagdollBuilder : ScriptableWizard
         AddJoint("Head", head, "Middle Spine", worldRight, worldForward, -40, 25, 25, null, 1, 1.0F);
     }
 
-    //~~~~~~~~~~~~~ C R E A T E  R A G D O L L  B U T T O N ~~~~~~~~~~~~~~~~
+    //~~~~~~~~~~~~~* C R E A T E  R A G D O L L  B U T T O N *~~~~~~~~~~~~~~~~
     void OnWizardCreate()
     {
+        GameObject staticAnim = InitialiseARagObjs();
+
         Cleanup();
         BuildCapsules();
         AddBreastColliders();
@@ -185,7 +187,8 @@ class ActiveRagdollBuilder : ScriptableWizard
         BuildJoints();
         CalculateMass();
 
-        SetupJointMatch();
+        //TO DO: pass animator to JointMatch
+        SetupJointMatch(staticAnim);
     }
 
     BoneInfo FindBone(string name)
@@ -322,6 +325,10 @@ class ActiveRagdollBuilder : ScriptableWizard
             joint.anchor = Vector3.zero;
             joint.connectedBody = bone.parent.anchor.GetComponent<Rigidbody>();
             joint.enablePreprocessing = false; // turn off to handle degenerated scenarios, like spawning inside geometry.
+            //Lock joint motion in all axes.
+            joint.xMotion = ConfigurableJointMotion.Locked;
+            joint.yMotion = ConfigurableJointMotion.Locked;
+            joint.zMotion = ConfigurableJointMotion.Locked;
 
             // Setup limits
             SoftJointLimit limit = new SoftJointLimit();
@@ -523,7 +530,7 @@ class ActiveRagdollBuilder : ScriptableWizard
     }
     
     //Add JointMatch script to the root object of character. Update JointMatch with an array of the bones selected in Ragdoll Builder.
-    void SetupJointMatch()
+    void SetupJointMatch(GameObject sAnimObj)
     {
         //Called at the end of CreateWizard(), after radgoll has been built. 
         pelvis.transform.root.gameObject.AddComponent(typeof(JointMatch));  //Joint Match class added to root object
@@ -532,14 +539,66 @@ class ActiveRagdollBuilder : ScriptableWizard
         int bi = 0; //bi is the bone index.
         foreach (BoneInfo bone in bones)
         {
+            //Setup RagdollBones array in JointMatch script
             jm.ragdollBones[bi] = bone.anchor;
+
+            //Set AnimBones to find the bone of the same name under the duplicate char model (Static Animator).
+            Transform tempSABone = sAnimObj.transform.Find(bone.anchor.name);
+            //FIX: SEARCH ALL CHILDREN OF sAnimObj to find the bone.
+            if (tempSABone != null){
+                jm.animBones[bi] = tempSABone;
+                Debug.Log(bone.anchor.name+" bone found on Static Animator");
+            }
+            else{
+                Debug.Log(bone.anchor.name + " could not be found on the StaticAnimator.");
+            }
+
             bi++;
         }
         jm.ragdollBones[11] = leftFoot;
         jm.ragdollBones[12] = rightFoot;
-
         bi += 2;    //Doesnt need to be done. We dont need the bone index anymore.
     }
+
+    GameObject InitialiseARagObjs(){
+        //Store PhysicsBody to variable.
+        Transform PhysicsBodyTF = pelvis.root;
+        PhysicsBodyTF.name = "PhysicsBody";
+
+        //Create empty GameObject to serve as root, containing the PhysicsBody and StaticAnimator
+        GameObject ActiveRagdollRoot = new GameObject();
+        ActiveRagdollRoot.transform.position = PhysicsBodyTF.position;
+        ActiveRagdollRoot.transform.rotation = PhysicsBodyTF.rotation;
+        ActiveRagdollRoot.name = "~* Active-Ragdoll";
+        //Create copy of character model root obj, to serve as StaticAnim.
+        GameObject staticAnimator = Instantiate(PhysicsBodyTF.gameObject, pelvis.root.position + (Vector3.up*2.5f) ,Quaternion.identity);
+        staticAnimator.name = "StaticAnimator";
+        //TO DO: Give custom transparent material to static anim meshes.
+
+        //If PhysicsBody had an animator. Delete it.
+        Animator anim = PhysicsBodyTF.GetComponent<Animator>();
+        if(anim == null){
+            anim = PhysicsBodyTF.GetComponentInChildren<Animator>();
+        }
+        if (anim != null){ DestroyImmediate(anim); }
+        Debug.Log("Animator on PhysicsBody has been destroyed.");
+
+        //If StaticAnimator doesn't have an animator component, add one.
+        anim = staticAnimator.GetComponent<Animator>();
+        if(anim == null){
+            anim = staticAnimator.GetComponentInChildren<Animator>();
+        }
+        if (anim == null){ anim = staticAnimator.AddComponent<Animator>(); }
+        Debug.Log("Animator on Static Animator exists."+ anim.name);
+        //ActiveRagdollRoot.AddComponent(anim);
+
+        //Set ActiveRagdoll parent/child heirachry.
+        PhysicsBodyTF.parent = ActiveRagdollRoot.transform;
+        staticAnimator.transform.parent = ActiveRagdollRoot.transform;
+
+        return staticAnimator;
+    }
+
 }
 
 
