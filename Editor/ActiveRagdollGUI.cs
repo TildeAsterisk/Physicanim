@@ -540,6 +540,10 @@ class ActiveRagdollBuilder : ScriptableWizard
         foreach (BoneInfo bone in bones)
         {
             jm.ragdollBones[bi] = bone.anchor;  //Setup RagdollBones array in JointMatch script
+            
+            //Add ConfigurableJoint on each bone to the cJoints array.
+            ConfigurableJoint cj = bone.anchor.GetComponent<ConfigurableJoint>();
+            if(cj != null){ jm.cJoints[bi-1] = cj; }
 
             //Setup animBones array in JointMatch script
             Transform sAnimHips = sAnimObj.transform.Find(pelvis.name);
