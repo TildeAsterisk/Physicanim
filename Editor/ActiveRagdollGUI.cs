@@ -560,11 +560,13 @@ class ActiveRagdollBuilder : ScriptableWizard
 
             bi++;
         }
+        /*
         jm.ragdollBones[11] = leftFoot;
         jm.ragdollBones[12] = rightFoot;
         jm.animBones[11] = leftFoot;
         jm.animBones[12] = rightFoot;
         bi += 2;    //Doesnt need to be done. We dont need the bone index anymore.
+        */
     }
 
     GameObject InitialiseARagObjs(){

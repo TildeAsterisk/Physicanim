@@ -63,7 +63,8 @@ public class JointMatch : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        UpdateJointTargets();
+        //UpdateJointTargets(); //WHEN ENABLED, NO ANIM COPY
+
         //UpdateFeetTargets(); //NO IK YET
     }
 
