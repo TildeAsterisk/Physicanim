@@ -313,7 +313,7 @@ class ActiveRagdollBuilder : ScriptableWizard
     {
         foreach (BoneInfo bone in bones)
         {
-            if (bone.parent == null && bone.name != "pelvis")
+            if (bone.parent == null)
                 continue;
 
             ConfigurableJoint joint = Undo.AddComponent<ConfigurableJoint>(bone.anchor.gameObject);
@@ -325,6 +325,7 @@ class ActiveRagdollBuilder : ScriptableWizard
             joint.anchor = Vector3.zero;
             joint.connectedBody = bone.parent.anchor.GetComponent<Rigidbody>();
             joint.enablePreprocessing = false; // turn off to handle degenerated scenarios, like spawning inside geometry.
+            
             //Lock joint motion in all axes.
             joint.xMotion = ConfigurableJointMotion.Locked;
             joint.yMotion = ConfigurableJointMotion.Locked;
@@ -535,6 +536,7 @@ class ActiveRagdollBuilder : ScriptableWizard
         //Called at the end of CreateWizard(), after radgoll has been built. 
         pelvis.transform.root.gameObject.AddComponent(typeof(JointMatch));  //Joint Match class added to root object
         JointMatch jm = pelvis.transform.root.GetComponent<JointMatch>();
+        jm.cJoints[0] = pelvis.gameObject.AddComponent<ConfigurableJoint>(); //Add pelvis char joint as first joint on cJoints list. ~*
 
         int bi = 0; //bi is the bone index.
         foreach (BoneInfo bone in bones)

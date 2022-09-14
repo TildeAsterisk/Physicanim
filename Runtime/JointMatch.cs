@@ -8,7 +8,7 @@ public class JointMatch : MonoBehaviour
     public ConfigurableJoint[] cJoints = new ConfigurableJoint[11];
     public Transform[] animBones = new Transform[11];
     private Quaternion[] initialJointRots;
-    public float jointSpringsStrength;
+    public float jointSpringsStrength = 1000;
     public float[,] initialJointSprings;
 
     public Transform rFootTarget;
@@ -83,6 +83,7 @@ public class JointMatch : MonoBehaviour
 
     void StoreInitialSprings()
     {
+        /*
         for (int i = 0; i < cJoints.Length; i++)
         {
             JointDrive jDrivex = cJoints[i].angularXDrive;
@@ -90,6 +91,7 @@ public class JointMatch : MonoBehaviour
             initialJointSprings[i, 0] = jDrivex.positionSpring;
             initialJointSprings[i, 1] = jDriveyz.positionSpring;
         }
+        */
         for (int i = 0; i < cJoints.Length; i++)
         {
             JointDrive jDrivex = cJoints[i].angularXDrive;
@@ -98,6 +100,7 @@ public class JointMatch : MonoBehaviour
             jDriveyz.positionSpring = jointSpringsStrength;
             cJoints[i].angularXDrive = jDrivex;
             cJoints[i].angularYZDrive = jDriveyz;
+            Debug.Log("Springs set for "+cJoints[i]);
         }
     }
 
