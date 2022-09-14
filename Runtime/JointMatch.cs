@@ -65,7 +65,7 @@ public class JointMatch : MonoBehaviour
     {
         for (int i = 0; i < cJoints.Length; i++)    //For each joint in cJoints, set target rotation to that of anim bone
         {
-            ConfigurableJointExtensions.SetTargetRotationLocal(cJoints[i], animBones[i + 1].localRotation, initialJointRots[i]);
+            ConfigurableJointExtensions.SetTargetRotationLocal(cJoints[i], animBones[i].localRotation, initialJointRots[i]);
         }
     }
 
