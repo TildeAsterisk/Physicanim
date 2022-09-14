@@ -42,6 +42,7 @@ public class JointMatch : MonoBehaviour
         StoreInitialSprings();
 
         UpdateFeetTargets(); //NO IK YET
+        
     }
 
     void Update()
