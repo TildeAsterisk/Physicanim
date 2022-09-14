@@ -41,7 +41,7 @@ public class JointMatch : MonoBehaviour
         initialJointSprings = new float[cJoints.Length,2];
         StoreInitialSprings();
 
-        UpdateFeetTargets(); //NO IK YET
+        //UpdateFeetTargets(); //NO IK YET
         
     }
 
@@ -58,7 +58,7 @@ public class JointMatch : MonoBehaviour
     {
         UpdateJointTargets(); //WHEN ENABLED, NO ANIM COPY
 
-        UpdateFeetTargets(); //NO IK YET
+        //UpdateFeetTargets(); //NO IK YET
     }
 
     //Matching the rotation of each cj to the animated bones.
