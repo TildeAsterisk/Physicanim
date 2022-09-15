@@ -51,6 +51,7 @@ public class JointMatch : MonoBehaviour
         {
             LerpJointSprings(0.01f);
         }
+        //UpdateStaticAnimPos();
     }
 
     // Update is called once per frame
@@ -159,5 +160,10 @@ public class JointMatch : MonoBehaviour
                 }
             }
         }
+    }
+
+    void UpdateStaticAnimPos(){
+        //static animator position to hips position
+        //staticAnimator.transform.position = pelvis.position;
     }
 }
