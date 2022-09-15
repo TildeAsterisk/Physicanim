@@ -42,6 +42,8 @@ public class JointMatch : MonoBehaviour
         StoreInitialSprings();
 
         //UpdateFeetTargets(); //NO IK YET
+
+        HideStaticAnimMesh();
         
     }
 
@@ -165,5 +167,17 @@ public class JointMatch : MonoBehaviour
     void UpdateStaticAnimPos(){
         //static animator position to hips position
         //staticAnimator.transform.position = pelvis.position;
+        animBones[0].position = new Vector3(ragdollBones[0].position.x, animBones[0].position.y,ragdollBones[0].position.z);
     }
+
+    void HideStaticAnimMesh(){
+        SkinnedMeshRenderer sAnimMesh = animBones[0].parent.GetComponentInChildren<SkinnedMeshRenderer>();
+        if (sAnimMesh != null){
+            sAnimMesh.sharedMesh = null;
+        }
+        else{
+            Debug.Log("Mesh on static animator could not be found.");
+        }
+    }
+
 }

@@ -601,7 +601,10 @@ class ActiveRagdollBuilder : ScriptableWizard
         }
         if (anim == null){ anim = staticAnimator.AddComponent<Animator>(); }
         Debug.Log("Animator on Static Animator exists."+ anim.name);
-        //ActiveRagdollRoot.AddComponent(anim);
+        //Set animator variables
+        anim.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+        anim.applyRootMotion = false;
+        anim.updateMode = AnimatorUpdateMode.AnimatePhysics;
 
         //Set ActiveRagdoll parent/child heirachry.
         PhysicsBodyTF.parent = ActiveRagdollRoot.transform;
