@@ -313,7 +313,7 @@ class ActiveRagdollBuilder : ScriptableWizard
     {
         foreach (BoneInfo bone in bones)
         {
-            if (bone.parent == null && bone.name != "pelvis")
+            if (bone.parent == null)
                 continue;
 
             ConfigurableJoint joint = Undo.AddComponent<ConfigurableJoint>(bone.anchor.gameObject);
@@ -325,6 +325,7 @@ class ActiveRagdollBuilder : ScriptableWizard
             joint.anchor = Vector3.zero;
             joint.connectedBody = bone.parent.anchor.GetComponent<Rigidbody>();
             joint.enablePreprocessing = false; // turn off to handle degenerated scenarios, like spawning inside geometry.
+            
             //Lock joint motion in all axes.
             joint.xMotion = ConfigurableJointMotion.Locked;
             joint.yMotion = ConfigurableJointMotion.Locked;
@@ -535,6 +536,7 @@ class ActiveRagdollBuilder : ScriptableWizard
         //Called at the end of CreateWizard(), after radgoll has been built. 
         pelvis.transform.root.gameObject.AddComponent(typeof(JointMatch));  //Joint Match class added to root object
         JointMatch jm = pelvis.transform.root.GetComponent<JointMatch>();
+        jm.cJoints[0] = pelvis.gameObject.AddComponent<ConfigurableJoint>(); //Add pelvis char joint as first joint on cJoints list. ~*
 
         int bi = 0; //bi is the bone index.
         foreach (BoneInfo bone in bones)
@@ -560,13 +562,13 @@ class ActiveRagdollBuilder : ScriptableWizard
 
             bi++;
         }
-        /*
+        
         jm.ragdollBones[11] = leftFoot;
         jm.ragdollBones[12] = rightFoot;
-        jm.animBones[11] = leftFoot;
-        jm.animBones[12] = rightFoot;
+        //jm.animBones[11] = leftFoot;
+        //jm.animBones[12] = rightFoot;
         bi += 2;    //Doesnt need to be done. We dont need the bone index anymore.
-        */
+        
     }
 
     GameObject InitialiseARagObjs(){
@@ -580,7 +582,7 @@ class ActiveRagdollBuilder : ScriptableWizard
         ActiveRagdollRoot.transform.rotation = PhysicsBodyTF.rotation;
         ActiveRagdollRoot.name = "~* Active-Ragdoll";
         //Create copy of character model root obj, to serve as StaticAnim.
-        GameObject staticAnimator = Instantiate(PhysicsBodyTF.gameObject, pelvis.root.position + (Vector3.up*2.5f) ,Quaternion.identity);
+        GameObject staticAnimator = Instantiate(PhysicsBodyTF.gameObject, pelvis.root.position ,Quaternion.identity);
         staticAnimator.name = "StaticAnimator";
         //TO DO: Give custom transparent material to static anim meshes.
 
@@ -599,7 +601,10 @@ class ActiveRagdollBuilder : ScriptableWizard
         }
         if (anim == null){ anim = staticAnimator.AddComponent<Animator>(); }
         Debug.Log("Animator on Static Animator exists."+ anim.name);
-        //ActiveRagdollRoot.AddComponent(anim);
+        //Set animator variables
+        anim.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+        anim.applyRootMotion = false;
+        anim.updateMode = AnimatorUpdateMode.AnimatePhysics;
 
         //Set ActiveRagdoll parent/child heirachry.
         PhysicsBodyTF.parent = ActiveRagdollRoot.transform;
