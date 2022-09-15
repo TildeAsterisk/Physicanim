@@ -582,7 +582,7 @@ class ActiveRagdollBuilder : ScriptableWizard
         ActiveRagdollRoot.transform.rotation = PhysicsBodyTF.rotation;
         ActiveRagdollRoot.name = "~* Active-Ragdoll";
         //Create copy of character model root obj, to serve as StaticAnim.
-        GameObject staticAnimator = Instantiate(PhysicsBodyTF.gameObject, pelvis.root.position + (Vector3.up*2.5f) ,Quaternion.identity);
+        GameObject staticAnimator = Instantiate(PhysicsBodyTF.gameObject, pelvis.root.position ,Quaternion.identity);
         staticAnimator.name = "StaticAnimator";
         //TO DO: Give custom transparent material to static anim meshes.
 

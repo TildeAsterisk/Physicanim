@@ -11,22 +11,22 @@ public class JointMatch : MonoBehaviour
     public float jointSpringsStrength = 1000;
     public float[,] initialJointSprings;
 
-    public Transform rFootTarget;
-    public Transform lFootTarget;
-    public Transform rFootAnim;
-    public Transform lFootAnim;
+    //public Transform rFootTarget;
+    //public Transform lFootTarget;
+    //public Transform rFootAnim;
+    //public Transform lFootAnim;
 
-    public Transform hips;
+    //public Transform hips;
 
     // Start is called before the first frame update
     void Start()
     {
         //Assign references on startup using ragdollBones array initialised on RagdollBuilder Create.
-        lFootAnim = ragdollBones[11];
-        rFootAnim = ragdollBones[12];
-        lFootTarget = ragdollBones[11];
-        rFootTarget = ragdollBones[12];
-        hips = ragdollBones[0];
+        //lFootAnim = ragdollBones[11];
+        //rFootAnim = ragdollBones[12];
+        //lFootTarget = ragdollBones[11];
+        //rFootTarget = ragdollBones[12];
+        //hips = ragdollBones[0];
 
 
         Transform[] initialaj = animBones;
@@ -75,12 +75,12 @@ public class JointMatch : MonoBehaviour
     private void UpdateFeetTargets()
     {
         //update iktarget position
-        rFootTarget.position = rFootAnim.position;
-        lFootTarget.position = lFootAnim.position;
+        //rFootTarget.position = rFootAnim.position;
+        //lFootTarget.position = lFootAnim.position;
 
         //update IK target rotation
-        rFootTarget.transform.eulerAngles = new Vector3(0, hips.eulerAngles.y, 0);
-        lFootTarget.transform.eulerAngles = new Vector3(0, hips.eulerAngles.y, 0);
+        //rFootTarget.transform.eulerAngles = new Vector3(0, hips.eulerAngles.y, 0);
+        //lFootTarget.transform.eulerAngles = new Vector3(0, hips.eulerAngles.y, 0);
     }
 
     void StoreInitialSprings()
