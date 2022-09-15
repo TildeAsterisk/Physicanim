@@ -8,25 +8,25 @@ public class JointMatch : MonoBehaviour
     public ConfigurableJoint[] cJoints = new ConfigurableJoint[11];
     public Transform[] animBones = new Transform[11];
     private Quaternion[] initialJointRots;
-    public float jointSpringsStrength;
+    public float jointSpringsStrength = 1000;
     public float[,] initialJointSprings;
 
-    public Transform rFootTarget;
-    public Transform lFootTarget;
-    public Transform rFootAnim;
-    public Transform lFootAnim;
+    //public Transform rFootTarget;
+    //public Transform lFootTarget;
+    //public Transform rFootAnim;
+    //public Transform lFootAnim;
 
-    public Transform hips;
+    //public Transform hips;
 
     // Start is called before the first frame update
     void Start()
     {
         //Assign references on startup using ragdollBones array initialised on RagdollBuilder Create.
-        lFootAnim = ragdollBones[11];
-        rFootAnim = ragdollBones[12];
-        lFootTarget = ragdollBones[11];
-        rFootTarget = ragdollBones[12];
-        hips = ragdollBones[0];
+        //lFootAnim = ragdollBones[11];
+        //rFootAnim = ragdollBones[12];
+        //lFootTarget = ragdollBones[11];
+        //rFootTarget = ragdollBones[12];
+        //hips = ragdollBones[0];
 
 
         Transform[] initialaj = animBones;
@@ -41,7 +41,10 @@ public class JointMatch : MonoBehaviour
         initialJointSprings = new float[cJoints.Length,2];
         StoreInitialSprings();
 
-        UpdateFeetTargets(); //NO IK YET
+        //UpdateFeetTargets(); //NO IK YET
+
+        HideStaticAnimMesh();
+        
     }
 
     void Update()
@@ -50,6 +53,7 @@ public class JointMatch : MonoBehaviour
         {
             LerpJointSprings(0.01f);
         }
+        //UpdateStaticAnimPos();
     }
 
     // Update is called once per frame
@@ -57,7 +61,7 @@ public class JointMatch : MonoBehaviour
     {
         UpdateJointTargets(); //WHEN ENABLED, NO ANIM COPY
 
-        UpdateFeetTargets(); //NO IK YET
+        //UpdateFeetTargets(); //NO IK YET
     }
 
     //Matching the rotation of each cj to the animated bones.
@@ -65,7 +69,7 @@ public class JointMatch : MonoBehaviour
     {
         for (int i = 0; i < cJoints.Length; i++)    //For each joint in cJoints, set target rotation to that of anim bone
         {
-            ConfigurableJointExtensions.SetTargetRotationLocal(cJoints[i], animBones[i + 1].localRotation, initialJointRots[i]);
+            ConfigurableJointExtensions.SetTargetRotationLocal(cJoints[i], animBones[i].localRotation, initialJointRots[i]);
         }
     }
 
@@ -73,16 +77,17 @@ public class JointMatch : MonoBehaviour
     private void UpdateFeetTargets()
     {
         //update iktarget position
-        rFootTarget.position = rFootAnim.position;
-        lFootTarget.position = lFootAnim.position;
+        //rFootTarget.position = rFootAnim.position;
+        //lFootTarget.position = lFootAnim.position;
 
         //update IK target rotation
-        rFootTarget.transform.eulerAngles = new Vector3(0, hips.eulerAngles.y, 0);
-        lFootTarget.transform.eulerAngles = new Vector3(0, hips.eulerAngles.y, 0);
+        //rFootTarget.transform.eulerAngles = new Vector3(0, hips.eulerAngles.y, 0);
+        //lFootTarget.transform.eulerAngles = new Vector3(0, hips.eulerAngles.y, 0);
     }
 
     void StoreInitialSprings()
     {
+        /*
         for (int i = 0; i < cJoints.Length; i++)
         {
             JointDrive jDrivex = cJoints[i].angularXDrive;
@@ -90,6 +95,7 @@ public class JointMatch : MonoBehaviour
             initialJointSprings[i, 0] = jDrivex.positionSpring;
             initialJointSprings[i, 1] = jDriveyz.positionSpring;
         }
+        */
         for (int i = 0; i < cJoints.Length; i++)
         {
             JointDrive jDrivex = cJoints[i].angularXDrive;
@@ -98,6 +104,7 @@ public class JointMatch : MonoBehaviour
             jDriveyz.positionSpring = jointSpringsStrength;
             cJoints[i].angularXDrive = jDrivex;
             cJoints[i].angularYZDrive = jDriveyz;
+            Debug.Log("Springs set for "+cJoints[i]);
         }
     }
 
@@ -156,4 +163,21 @@ public class JointMatch : MonoBehaviour
             }
         }
     }
+
+    void UpdateStaticAnimPos(){
+        //static animator position to hips position
+        //staticAnimator.transform.position = pelvis.position;
+        animBones[0].position = new Vector3(ragdollBones[0].position.x, animBones[0].position.y,ragdollBones[0].position.z);
+    }
+
+    void HideStaticAnimMesh(){
+        SkinnedMeshRenderer sAnimMesh = animBones[0].parent.GetComponentInChildren<SkinnedMeshRenderer>();
+        if (sAnimMesh != null){
+            sAnimMesh.sharedMesh = null;
+        }
+        else{
+            Debug.Log("Mesh on static animator could not be found.");
+        }
+    }
+
 }
