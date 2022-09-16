@@ -1,10 +1,10 @@
 {
-  "name": "com.tildeasterisk.activeragdollsystem",
+  "name": "com.tildeasterisk.physicsanimationsystem",
   "version": "1.0.0",
-  "displayName": "Active Ragdoll System",
+  "displayName": "Physics Animation System - FREE",
   "description": "Automatically set up your character as an active ragdoll, rigid body character with procedural animation. Works with Mixamo.",
   "unity": "2020.3",
-  "unityRelease": "0b5",
+  "unityRelease": "38f1",
   "documentationUrl": "http://tildeasterisk.com/p/documentaton.html",
   "changelogUrl": "http://tildeasterisk.com/p/changelog.html",
   "licensesUrl": "http://tildeasterisk.com/p/licensing.html",
