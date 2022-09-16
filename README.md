@@ -1,6 +1,7 @@
-Active Ragdoll Character Toolkit by Tilde Asterisk ~*
+Physica Animata by Tilde Asterisk ~*
 =======
-Turn humanoid character models into active ragdolls, with physics driven procedural animation and collisions.
+Active Ragdoll Character Toolkit
+Physica Animata is an active ragdoll system that allows for characters to play physics driven animations. (Works with Mixamo.)
 
 .
 
