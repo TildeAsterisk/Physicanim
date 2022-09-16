@@ -1,7 +1,7 @@
-Physica Animata by Tilde Asterisk ~*
+PhysicAnimata by Tilde Asterisk ~*
 =======
 Active Ragdoll Character Toolkit
-Physica Animata is an active ragdoll system that allows for characters to play physics driven animations. (Works with Mixamo.)
+PhysicAnimata is an active ragdoll system that allows for characters to play physics driven animations. (Works with Mixamo.)
 
 .
 
