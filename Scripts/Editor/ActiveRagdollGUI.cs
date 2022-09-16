@@ -539,6 +539,7 @@ class ActiveRagdollBuilder : ScriptableWizard
         
         jm.cJoints[0] = pelvis.gameObject.AddComponent<ConfigurableJoint>(); //Add pelvis char joint as first joint on cJoints list. ~*
         
+        /*
         //create new marionette gameobject with rigidbody kinematic and not using grvity. In position of root
         GameObject marionette = new GameObject();
         marionette.name = "Marionette";
@@ -548,17 +549,23 @@ class ActiveRagdollBuilder : ScriptableWizard
         Rigidbody m_rb = marionette.AddComponent<Rigidbody>();
         m_rb.isKinematic = true;
         m_rb.useGravity = false;
+        */
+        
+        //Set StaticAnimator object as marionette to control char movement when hipjoint movement is limited.
+        Rigidbody marionette_rb = sAnimObj.AddComponent<Rigidbody>();
+        marionette_rb.isKinematic = true;
+        marionette_rb.useGravity = false;
         //Setup hip joint parameters
         jm.cJoints[0].xMotion = ConfigurableJointMotion.Limited;
         jm.cJoints[0].zMotion = ConfigurableJointMotion.Limited;
         jm.cJoints[0].yMotion = ConfigurableJointMotion.Limited;
-        jm.cJoints[0].connectedBody = m_rb;
+        jm.cJoints[0].connectedBody = marionette_rb;
         
         //set linier limit spring
-        SoftJointLimitSpring lmtSpr = jm.cJoints[0].linearLimitSpring;
-        lmtSpr.spring = 9999;
-        lmtSpr.damper = 420;
-        jm.cJoints[0].linearLimitSpring = lmtSpr;
+        //SoftJointLimitSpring lmtSpr = jm.cJoints[0].linearLimitSpring;
+        //lmtSpr.spring = 9999;
+        //lmtSpr.damper = 420;
+        //jm.cJoints[0].linearLimitSpring = lmtSpr;
         
 
         int bi = 0; //bi is the bone index.
