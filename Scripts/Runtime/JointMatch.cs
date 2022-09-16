@@ -11,6 +11,8 @@ public class JointMatch : MonoBehaviour
     public float jointSpringsStrength = 1000;
     public float[,] initialJointSprings;
 
+    public bool limitHipMovement;
+
     //public Transform rFootTarget;
     //public Transform lFootTarget;
     //public Transform rFootAnim;
@@ -59,8 +61,11 @@ public class JointMatch : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        UpdateJointTargets(); //WHEN ENABLED, NO ANIM COPY
-
+        UpdateJointTargets();
+        
+        //NEEDS TO BE CHANGED
+        ToggleHipMovement(limitHipMovement);
+        
         //UpdateFeetTargets(); //NO IK YET
     }
 
@@ -177,6 +182,19 @@ public class JointMatch : MonoBehaviour
         }
         else{
             Debug.Log("Mesh on static animator could not be found.");
+        }
+    }
+
+    void ToggleHipMovement(bool hiplock){
+        if(hiplock){
+            cJoints[0].xMotion = ConfigurableJointMotion.Limited;
+            cJoints[0].zMotion = ConfigurableJointMotion.Limited;
+            cJoints[0].yMotion = ConfigurableJointMotion.Limited;
+        }
+        else{
+            cJoints[0].xMotion = ConfigurableJointMotion.Free;
+            cJoints[0].zMotion = ConfigurableJointMotion.Free;
+            cJoints[0].yMotion = ConfigurableJointMotion.Free;
         }
     }
 
