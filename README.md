@@ -1,5 +1,6 @@
-Active Ragdoll Character Toolkit by Tilde Asterisk ~*
+PhysicAnimata by Tilde Asterisk ~*
 =======
+Active Ragdoll Character Toolkit
 Turn humanoid character models into active ragdolls, with physics driven procedural animation and collisions.
 
 .
