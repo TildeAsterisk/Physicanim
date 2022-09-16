@@ -1,8 +1,8 @@
 {
-  "name": "com.tildeasterisk.physicanimata.free",
+  "name": "com.tildeasterisk.physicaanimata.free",
   "version": "1.0.0",
-  "displayName": "PhysicAnimata - FREE",
-  "description": "PhysicAnimata is an active ragdoll system that allows for characters to play physics driven animations. (Works with Mixamo.)",
+  "displayName": "Physica Animata - FREE",
+  "description": "Physica Animata is an active ragdoll system that allows for characters to play physics driven animations. (Works with Mixamo.)",
   "unity": "2020.3",
   "unityRelease": "38f1",
   "documentationUrl": "http://tildeasterisk.com/p/documentaton.html",
