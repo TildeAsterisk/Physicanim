@@ -536,7 +536,28 @@ class ActiveRagdollBuilder : ScriptableWizard
         //Called at the end of CreateWizard(), after radgoll has been built. 
         pelvis.transform.root.gameObject.AddComponent(typeof(JointMatch));  //Joint Match class added to root object
         JointMatch jm = pelvis.transform.root.GetComponent<JointMatch>();
+        
         jm.cJoints[0] = pelvis.gameObject.AddComponent<ConfigurableJoint>(); //Add pelvis char joint as first joint on cJoints list. ~*
+        /*
+        //create new marionette gameobject with rigidbody kinematic and not using grvity. In position of root
+        GameObject marionette = new GameObject();
+        marionette.name = "Marionette";
+        //Instantiate(marionette,jm.ragdollBones[0].root.position, Quaternion.identity);
+        marionette.transform.parent = pelvis.transform.root;
+        Rigidbody m_rb = marionette.AddComponent<Rigidbody>();
+        m_rb.isKinematic = true;
+        m_rb.useGravity = false;
+        //Setup hip joint parameters
+        jm.cJoints[0].xMotion = ConfigurableJointMotion.Limited;
+        jm.cJoints[0].zMotion = ConfigurableJointMotion.Limited;
+        jm.cJoints[0].connectedBody = m_rb;
+        
+        //set linier limit spring
+        SoftJointLimitSpring lmtSpr = jm.cJoints[0].linearLimitSpring;
+        lmtSpr.spring = 9999;
+        lmtSpr.damper = 420;
+        jm.cJoints[0].linearLimitSpring = lmtSpr;
+        */
 
         int bi = 0; //bi is the bone index.
         foreach (BoneInfo bone in bones)
