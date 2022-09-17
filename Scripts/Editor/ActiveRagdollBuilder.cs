@@ -98,7 +98,7 @@ class ActiveRagdollBuilder : ScriptableWizard
         }
     }
 
-    [MenuItem("[ ~* ]/Active Ragdoll Builder", false, 2000)]
+    //[MenuItem("[ ~* ]/Active Ragdoll Builder", false, 2000)]
     static void CreateWizard()
     {
         ScriptableWizard.DisplayWizard<ActiveRagdollBuilder>("Create Ragdoll");
@@ -127,7 +127,7 @@ class ActiveRagdollBuilder : ScriptableWizard
             forward = -forward;
     }
 
-    void OnWizardUpdate()
+    public void OnWizardUpdate()
     {
         errorString = CheckConsistency();
         CalculateAxes();
@@ -174,7 +174,7 @@ class ActiveRagdollBuilder : ScriptableWizard
     }
 
     //~~~~~~~~~~~~~* C R E A T E  R A G D O L L  B U T T O N *~~~~~~~~~~~~~~~~
-    void OnWizardCreate()
+    public void OnWizardCreate()
     {
         GameObject staticAnim = InitialiseARagObjs();
 
@@ -584,7 +584,7 @@ class ActiveRagdollBuilder : ScriptableWizard
                 foreach(Transform tf in sAnimHips.GetComponentsInChildren<Transform>()){
                     if (tf.name == bone.anchor.name){
                         jm.animBones[bi] = tf; //add to JointMatch.animBones
-                        Debug.Log(tf.name + " added to the animBones array in JointMatch.");
+                        //Debug.Log(tf.name + " added to the animBones array in JointMatch.");
                     }
                 }
             }
@@ -644,6 +644,5 @@ class ActiveRagdollBuilder : ScriptableWizard
     }
 
 }
-
 
 //Research windows that use EditorWindow and ScriptableWizard.
