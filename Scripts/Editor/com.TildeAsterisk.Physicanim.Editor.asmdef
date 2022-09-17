@@ -1,0 +1,16 @@
+{
+    "name": "com.TildeAsterisk.Physicanim.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:1eb63d07bf3e2dc4dadac296c1d384cf"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
