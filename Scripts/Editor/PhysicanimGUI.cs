@@ -5,33 +5,33 @@ using UnityEditor;
 
 public class PhysicanimGUI : EditorWindow
 {
-    //Object selectedObj;
+    //GameObject selectedObj;
     GameObject charModelObj;
     Avatar charRig;
 
-    [MenuItem("[ ~* ]/Physicanim")]
+    [MenuItem("[ ~* ]/Physicanim ~*")]
     public static void ShowWindow()
     {
-        GetWindow<PhysicanimGUI>("Physicanim by ~*");
+        GetWindow<PhysicanimGUI>("Physicanim");
     }
 
     void OnGUI()
     {
         //Selected Object Fields
-        GUILayout.Label("Convert character into Physanim~* active ragdoll.", EditorStyles.boldLabel);
+        GUILayout.Label("Please select a riddged character model to be converted into an Physanim~* active ragdoll.", EditorStyles.boldLabel);
         //selectedObj = EditorGUILayout.ObjectField("Selected Object",Selection.activeObject, typeof(Object),true);
         charModelObj = (GameObject)EditorGUILayout.ObjectField("Character Model:",Selection.activeGameObject, typeof(GameObject),true);
         //Check to show GUI
-        if (charRig != null)
+        if (charRig)
         { GUI.enabled = true; }
         else { GUI.enabled = false; }
-        charRig = GetRig(charModelObj);
+
+        if (charModelObj) { charRig = GetRig(charModelObj); }
         charRig = (Avatar)EditorGUILayout.ObjectField("Avatar (e.g: Rig, Skeleton):", charRig, typeof(Avatar),true);
 
         if (GUILayout.Button("Create Active Ragdoll"))
         {
             Debug.Log(charRig.name);
-            
         }
         GUI.enabled = true;
     }
@@ -40,7 +40,7 @@ public class PhysicanimGUI : EditorWindow
     Avatar GetRig(GameObject characterModel)
     {
         Animator anim = characterModel.GetComponent<Animator>();
-        if (anim != null) 
+        if (anim) 
         {
             return anim.avatar;
         }
