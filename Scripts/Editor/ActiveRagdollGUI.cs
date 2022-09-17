@@ -98,7 +98,7 @@ class ActiveRagdollBuilder : ScriptableWizard
         }
     }
 
-    [MenuItem("Window/Active Ragdoll Builder by [ ~* ]", false, 2000)]
+    [MenuItem("[ ~* ]/Active Ragdoll Builder", false, 2000)]
     static void CreateWizard()
     {
         ScriptableWizard.DisplayWizard<ActiveRagdollBuilder>("Create Ragdoll");
@@ -646,86 +646,4 @@ class ActiveRagdollBuilder : ScriptableWizard
 }
 
 
-//Below are windows that use EditorWindow and ScriptableWizard.
-
-#region TempTestEditorWindows
-/*
-public class ActiveRagdollGUI : EditorWindow
-{
-    [MenuItem("Window/Active Ragdoll Toolkit by [ ~* ]/~* Active Ragdoll Manager")]
-    static void Initialize()
-    {
-        ActiveRagdollGUI window = (ActiveRagdollGUI)EditorWindow.GetWindow(typeof(ActiveRagdollGUI), true, "~* Active Ragdoll Toolkit");
-    }
-
-    void OnGUI()
-    {
-        //add stuff here buttons labels editable code
-        GUILayout.Label("Select an object in the hierarchy view");
-        if (GUILayout.Button("Animate Ragdoll"))
-        {
-            Debug.Log("Start Animating Ragdoll");
-        }
-
-        if (GUILayout.Button("Open new editor window."))
-        {
-            windowB RagdollSetupWin = (windowB)EditorWindow.GetWindow(typeof(windowB), true, "~* Ragdoll Builder", true);
-            Debug.Log("Setup joints and colliders.");
-        }
-    }
-
-    //When opening the window in the editor, the selected object in the heirarchy is printed in the console
-    
-    [MenuItem("Active Ragdoll Toolkit by [ ~* ]/~* Show selected objects")]
-    static void PrintSelectedObject()
-    {
-        Transform[] transforms = Selection.transforms;
-        foreach (Transform tf in transforms)
-        {
-            Debug.Log(tf.gameObject.name);
-        }
-    }
-
-}
-
-class windowB : EditorWindow
-{
-    void OnGUI()
-    {
-        GUILayout.Label("Select an object in the hierarchy view");
-        if (GUILayout.Button("make thingy"))
-        {
-            Debug.Log("okayu");
-        }
-    }
-}
-*/
-#endregion
-
-#region scriptablewizardtemplate
-/*
-public class ScriptableWizardOnWizardCreate : ScriptableWizard
-{
-    [MenuItem("~* / OnWizardCreate example")]
-    public static void SelectAllOfTypeMenuIem()
-    {
-        ScriptableWizard.DisplayWizard(
-            "Select objects of type ...",
-            typeof(ScriptableWizardOnWizardCreate),
-            "Select");
-    }
-
-    void OnWizardCreate()
-    {
-        Object[] objs = FindObjectsOfType(typeof(GameObject));
-        ArrayList selectionBuilder = new ArrayList();
-        foreach (GameObject go in objs)
-        {
-            if (go.GetComponent<Camera>())
-                selectionBuilder.Add(go);
-        }
-        Selection.objects = selectionBuilder.ToArray(typeof(GameObject)) as GameObject[];
-    }
-}
-*/
-#endregion
+//Research windows that use EditorWindow and ScriptableWizard.
