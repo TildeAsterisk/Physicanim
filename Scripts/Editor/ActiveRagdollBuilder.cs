@@ -622,7 +622,7 @@ class ActiveRagdollBuilder : ScriptableWizard
             anim = PhysicsBodyTF.GetComponentInChildren<Animator>();
         }
         if (anim != null){ DestroyImmediate(anim); }
-        Debug.Log("Animator on PhysicsBody has been destroyed.");
+        //Debug.Log("Animator on PhysicsBody has been destroyed.");
 
         //If StaticAnimator doesn't have an animator component, add one.
         anim = staticAnimator.GetComponent<Animator>();
@@ -630,7 +630,7 @@ class ActiveRagdollBuilder : ScriptableWizard
             anim = staticAnimator.GetComponentInChildren<Animator>();
         }
         if (anim == null){ anim = staticAnimator.AddComponent<Animator>(); }
-        Debug.Log("Animator on Static Animator exists."+ anim.name);
+        //Debug.Log("Animator on Static Animator exists."+ anim.name);
         //Set animator variables
         anim.cullingMode = AnimatorCullingMode.AlwaysAnimate;
         anim.applyRootMotion = false;

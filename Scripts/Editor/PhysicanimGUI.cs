@@ -19,7 +19,8 @@ public class PhysicanimGUI : EditorWindow
     void OnGUI()
     {
         //Selected Object Fields
-        GUILayout.Label("Please select a ridgged character model to be converted into an Physanim~* active ragdoll.", EditorStyles.boldLabel);
+        GUILayout.Label("Physicanim Control Panel", EditorStyles.boldLabel);
+        GUILayout.Box("Please select a rigged character model to be converted into an Physicanim active ragdoll.");
         //selectedObj = EditorGUILayout.ObjectField("Selected Object",Selection.activeObject, typeof(Object),true);
         charModelObj = (GameObject)EditorGUILayout.ObjectField("Character Model:",Selection.activeGameObject, typeof(GameObject),true);
         
@@ -35,12 +36,13 @@ public class PhysicanimGUI : EditorWindow
         if (charModelObj) { charRig = GetRig(charModelObj); }   //if selected GameObject has rig set charRig
         else { charRig = null; }
         Avatar avField = (Avatar)EditorGUILayout.ObjectField("Avatar (e.g: Rig, Skeleton):", charRig, typeof(Avatar),true);
-        GUI.enabled = true;
 
-        if(GUILayout.Button("Open Ragdoll Builder"))
+        if (GUILayout.Button("Create Active Ragdoll"))
         {
-            //ScriptableWizard rdBuilderWizard = ScriptableWizard.DisplayWizard<ActiveRagdollBuilder>("~* Active Ragdoll Builder");
-            ActiveRagdollBuilder rdBuilder = ScriptableWizard.DisplayWizard<ActiveRagdollBuilder>("~* Active Ragdoll Builder");
+            //Depending on ARagBuilder reference, could open window or not.
+            //ActiveRagdollBuilder rdBuilder = ScriptableWizard.DisplayWizard<ActiveRagdollBuilder>("~* Active Ragdoll Builder");
+            //ActiveRagdollBuilder rdBuilder = EditorWindow.GetWindow<ActiveRagdollBuilder>("~* Active Ragdoll Builder");
+            ActiveRagdollBuilder rdBuilder = new ActiveRagdollBuilder();    //Doesn't display window
 
             //set each parameter in ragdoll builder from animator avatar
             rdBuilder.pelvis = charAnim.GetBoneTransform(HumanBodyBones.Hips);
@@ -60,6 +62,7 @@ public class PhysicanimGUI : EditorWindow
             rdBuilder.OnWizardUpdate();
             rdBuilder.OnWizardCreate(); //Create ragdoll using wizard
         }
+        GUI.enabled = true;
     }
 
     //Get the avatar from any charactermodel. in scene or assets
