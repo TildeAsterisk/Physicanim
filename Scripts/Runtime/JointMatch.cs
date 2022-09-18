@@ -13,6 +13,8 @@ public class JointMatch : MonoBehaviour
 
     public bool limitHipMovement;
 
+    public Material debugMat;
+
     //public Transform rFootTarget;
     //public Transform lFootTarget;
     //public Transform rFootAnim;
@@ -109,7 +111,7 @@ public class JointMatch : MonoBehaviour
             jDriveyz.positionSpring = jointSpringsStrength;
             cJoints[i].angularXDrive = jDrivex;
             cJoints[i].angularYZDrive = jDriveyz;
-            Debug.Log("Springs set for "+cJoints[i]);
+            //Debug.Log("Springs set for "+cJoints[i]);
         }
     }
 
@@ -178,7 +180,8 @@ public class JointMatch : MonoBehaviour
     void HideStaticAnimMesh(){
         SkinnedMeshRenderer sAnimMesh = animBones[0].parent.GetComponentInChildren<SkinnedMeshRenderer>();
         if (sAnimMesh != null){
-            sAnimMesh.sharedMesh = null;
+            sAnimMesh.material = debugMat;
+            //sAnimMesh.sharedMesh = null;
         }
         else{
             Debug.Log("Mesh on static animator could not be found.");
