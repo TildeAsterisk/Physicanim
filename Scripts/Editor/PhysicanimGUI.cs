@@ -23,19 +23,21 @@ public class PhysicanimGUI : EditorWindow
         GUILayout.Box("Please select a rigged character model to be converted into an Physicanim active ragdoll.");
         //selectedObj = EditorGUILayout.ObjectField("Selected Object",Selection.activeObject, typeof(Object),true);
         charModelObj = (GameObject)EditorGUILayout.ObjectField("Character Model:",Selection.activeGameObject, typeof(GameObject),true);
-        
+
+        if (charModelObj) { charAnim = charModelObj.GetComponent<Animator>(); }
+        else { charAnim = null; }
+        if (charModelObj) { charRig = GetRig(charModelObj); }   //if selected GameObject has rig set charRig
+        else { charRig = null; }
+
         //Check to show GUI
         if (charRig)
         { GUI.enabled = true; }
         else { GUI.enabled = false; }
-
-        if(charModelObj) { charAnim = charModelObj.GetComponent<Animator>(); }
-        else { charAnim = null; }
+        
+        /* //Shows Animator and Avatar component on current object if there is one.
         Animator charAnimField = (Animator)EditorGUILayout.ObjectField("Animator:",charAnim,typeof(Animator),true);
-
-        if (charModelObj) { charRig = GetRig(charModelObj); }   //if selected GameObject has rig set charRig
-        else { charRig = null; }
         Avatar avField = (Avatar)EditorGUILayout.ObjectField("Avatar (e.g: Rig, Skeleton):", charRig, typeof(Avatar),true);
+        */
 
         if (GUILayout.Button("Create Active Ragdoll"))
         {
@@ -56,7 +58,7 @@ public class PhysicanimGUI : EditorWindow
             rdBuilder.leftElbow = charAnim.GetBoneTransform(HumanBodyBones.LeftLowerArm);
             rdBuilder.rightArm = charAnim.GetBoneTransform(HumanBodyBones.RightUpperArm);
             rdBuilder.rightElbow = charAnim.GetBoneTransform(HumanBodyBones.RightLowerArm);
-            rdBuilder.middleSpine = charAnim.GetBoneTransform(HumanBodyBones.Spine);
+            rdBuilder.middleSpine = charAnim.GetBoneTransform(HumanBodyBones.Chest);
             rdBuilder.head = charAnim.GetBoneTransform(HumanBodyBones.Head);
 
             rdBuilder.OnWizardUpdate();

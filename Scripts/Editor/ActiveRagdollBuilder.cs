@@ -534,31 +534,25 @@ class ActiveRagdollBuilder : ScriptableWizard
     void SetupJointMatch(GameObject sAnimObj)
     {
         //Called at the end of CreateWizard(), after radgoll has been built. 
-        pelvis.transform.root.gameObject.AddComponent(typeof(JointMatch));  //Joint Match class added to root object
-        JointMatch jm = pelvis.transform.root.GetComponent<JointMatch>();
+        pelvis.transform.root.gameObject.AddComponent(typeof(Physicanimator));  //Joint Match class added to root object
+        Physicanimator jm = pelvis.transform.root.GetComponent<Physicanimator>();
         
         jm.cJoints[0] = pelvis.gameObject.AddComponent<ConfigurableJoint>(); //Add pelvis char joint as first joint on cJoints list. ~*
-        
-        /*
-        //create new marionette gameobject with rigidbody kinematic and not using grvity. In position of root
-        GameObject marionette = new GameObject();
-        marionette.name = "Marionette";
-        //Instantiate(marionette,jm.ragdollBones[0].root.position, Quaternion.identity);
-        marionette.transform.parent = pelvis.transform.root;
-        sAnimObj.transform.parent = marionette.transform;
-        Rigidbody m_rb = marionette.AddComponent<Rigidbody>();
-        m_rb.isKinematic = true;
-        m_rb.useGravity = false;
-        */
-        
+
         //Set StaticAnimator object as marionette to control char movement when hipjoint movement is limited.
-        Rigidbody marionette_rb = sAnimObj.AddComponent<Rigidbody>();
+        //Rigidbody marionette_rb = sAnimObj.AddComponent<Rigidbody>();
+        Transform sAnimHips = sAnimObj.transform.Find(pelvis.name);
+        Rigidbody marionette_rb = sAnimHips.gameObject.AddComponent<Rigidbody>();
         marionette_rb.isKinematic = true;
         marionette_rb.useGravity = false;
         //Setup hip joint parameters
-        jm.cJoints[0].xMotion = ConfigurableJointMotion.Limited;
-        jm.cJoints[0].zMotion = ConfigurableJointMotion.Limited;
-        jm.cJoints[0].yMotion = ConfigurableJointMotion.Limited;
+        jm.cJoints[0].xMotion = ConfigurableJointMotion.Locked;
+        jm.cJoints[0].zMotion = ConfigurableJointMotion.Locked;
+        jm.cJoints[0].yMotion = ConfigurableJointMotion.Locked;
+        jm.cJoints[0].angularXMotion = ConfigurableJointMotion.Locked;
+        jm.cJoints[0].angularYMotion = ConfigurableJointMotion.Locked;
+        jm.cJoints[0].angularZMotion = ConfigurableJointMotion.Locked;
+
         jm.cJoints[0].connectedBody = marionette_rb;
         
         //set linier limit spring
@@ -578,7 +572,6 @@ class ActiveRagdollBuilder : ScriptableWizard
             if(cj != null){ jm.cJoints[bi] = cj; }
 
             //Setup animBones array in JointMatch script
-            Transform sAnimHips = sAnimObj.transform.Find(pelvis.name);
             if(sAnimHips!=null)
             {
                 foreach(Transform tf in sAnimHips.GetComponentsInChildren<Transform>()){
@@ -633,7 +626,7 @@ class ActiveRagdollBuilder : ScriptableWizard
         //Debug.Log("Animator on Static Animator exists."+ anim.name);
         //Set animator variables
         anim.cullingMode = AnimatorCullingMode.AlwaysAnimate;
-        anim.applyRootMotion = false;
+        anim.applyRootMotion = true;
         anim.updateMode = AnimatorUpdateMode.AnimatePhysics;
 
         //Set ActiveRagdoll parent/child heirachry.

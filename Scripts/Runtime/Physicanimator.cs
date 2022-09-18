@@ -2,16 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JointMatch : MonoBehaviour
+public class Physicanimator : MonoBehaviour
 {
     public Transform[] ragdollBones = new Transform[13];
     public ConfigurableJoint[] cJoints = new ConfigurableJoint[11];
     public Transform[] animBones = new Transform[11];
     private Quaternion[] initialJointRots;
-    public float jointSpringsStrength = 1000;
+    public float jointSpringsStrength = 420;
+    public float jointSpringDamper = 1;
     public float[,] initialJointSprings;
 
-    public bool limitHipMovement;
+    public bool limitHipMovement = true;
 
     public Material debugMat;
 
@@ -109,6 +110,8 @@ public class JointMatch : MonoBehaviour
             JointDrive jDriveyz = cJoints[i].angularYZDrive;
             jDrivex.positionSpring = jointSpringsStrength;
             jDriveyz.positionSpring = jointSpringsStrength;
+            jDrivex.positionDamper = jointSpringDamper;
+            jDriveyz.positionDamper = jointSpringDamper;
             cJoints[i].angularXDrive = jDrivex;
             cJoints[i].angularYZDrive = jDriveyz;
             //Debug.Log("Springs set for "+cJoints[i]);
@@ -171,17 +174,12 @@ public class JointMatch : MonoBehaviour
         }
     }
 
-    void UpdateStaticAnimPos(){
-        //static animator position to hips position
-        //staticAnimator.transform.position = pelvis.position;
-        animBones[0].position = new Vector3(ragdollBones[0].position.x, animBones[0].position.y,ragdollBones[0].position.z);
-    }
-
     void HideStaticAnimMesh(){
         SkinnedMeshRenderer sAnimMesh = animBones[0].parent.GetComponentInChildren<SkinnedMeshRenderer>();
         if (sAnimMesh != null){
-            sAnimMesh.material = debugMat;
+
             //sAnimMesh.sharedMesh = null;
+            sAnimMesh.material = debugMat;
         }
         else{
             Debug.Log("Mesh on static animator could not be found.");
