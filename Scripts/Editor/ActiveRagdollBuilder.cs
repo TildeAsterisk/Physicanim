@@ -539,6 +539,8 @@ class ActiveRagdollBuilder : ScriptableWizard
         
         jm.cJoints[0] = pelvis.gameObject.AddComponent<ConfigurableJoint>(); //Add pelvis char joint as first joint on cJoints list. ~*
 
+        jm.staticAnimRoot = sAnimObj.transform;
+
         //Set StaticAnimator object as marionette to control char movement when hipjoint movement is limited.
         //Rigidbody marionette_rb = sAnimObj.AddComponent<Rigidbody>();
         Transform sAnimHips = sAnimObj.transform.Find(pelvis.name);

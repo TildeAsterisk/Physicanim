@@ -2,41 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Physicanimator : MonoBehaviour
 {
     public Transform[] ragdollBones = new Transform[13];
     public ConfigurableJoint[] cJoints = new ConfigurableJoint[11];
     public Transform[] animBones = new Transform[11];
     private Quaternion[] initialJointRots;
+    [Range(0.0f,9999.0f)]
     public float jointSpringsStrength = 420;
+    [Range(0.0f, 1000.0f)]
     public float jointSpringDamper = 1;
     public float[,] initialJointSprings;
-
     public bool limitHipMovement = true;
-
     public Material debugMat;
+    public Transform physicsBodyRoot;
+    public Transform staticAnimRoot;
 
-    //public Transform rFootTarget;
-    //public Transform lFootTarget;
-    //public Transform rFootAnim;
-    //public Transform lFootAnim;
+    [SerializeField]
+    PhysicanimCharacterBehaviour[] physicanimCharacterBehaviours;
 
-    //public Transform hips;
+    void OnValidate()
+    {
+        //ToggleHipLock(limitHipMovement);
+        SetJointSprings();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        //Assign references on startup using ragdollBones array initialised on RagdollBuilder Create.
-        //lFootAnim = ragdollBones[11];
-        //rFootAnim = ragdollBones[12];
-        //lFootTarget = ragdollBones[11];
-        //rFootTarget = ragdollBones[12];
-        //hips = ragdollBones[0];
-
-
+        //Set initial joint springs
         Transform[] initialaj = animBones;
         ConfigurableJoint[] initialcj = cJoints;
-
         initialJointRots = new Quaternion[cJoints.Length];
         for (int i = 0; i < cJoints.Length; i++)
         {
@@ -44,31 +41,23 @@ public class Physicanimator : MonoBehaviour
         }
 
         initialJointSprings = new float[cJoints.Length,2];
-        StoreInitialSprings();
+        SetJointSprings();
 
         //UpdateFeetTargets(); //NO IK YET
-
         HideStaticAnimMesh();
-        
-    }
-
-    void Update()
-    {
-        if (jointsLerping && t <= 1)
-        {
-            LerpJointSprings(0.01f);
-        }
-        //UpdateStaticAnimPos();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        /*
+        if (jointsLerping && t <= 1)
+        {
+            LerpJointSprings(0.01f);
+        }
+        */
+
         UpdateJointTargets();
-        
-        //NEEDS TO BE CHANGED
-        ToggleHipMovement(limitHipMovement);
-        
         //UpdateFeetTargets(); //NO IK YET
     }
 
@@ -93,40 +82,33 @@ public class Physicanimator : MonoBehaviour
         //lFootTarget.transform.eulerAngles = new Vector3(0, hips.eulerAngles.y, 0);
     }
 
-    void StoreInitialSprings()
+    void SetJointSprings()
     {
-        /*
-        for (int i = 0; i < cJoints.Length; i++)
+        SetJointParams(cJoints[0], 0, 0);   //Set hip spring and damper to zero
+
+        for (int i = 1; i < cJoints.Length; i++)    //set joints to chosen values
         {
-            JointDrive jDrivex = cJoints[i].angularXDrive;
-            JointDrive jDriveyz = cJoints[i].angularYZDrive;
-            initialJointSprings[i, 0] = jDrivex.positionSpring;
-            initialJointSprings[i, 1] = jDriveyz.positionSpring;
-        }
-        */
-        for (int i = 0; i < cJoints.Length; i++)
-        {
-            JointDrive jDrivex = cJoints[i].angularXDrive;
-            JointDrive jDriveyz = cJoints[i].angularYZDrive;
-            jDrivex.positionSpring = jointSpringsStrength;
-            jDriveyz.positionSpring = jointSpringsStrength;
-            jDrivex.positionDamper = jointSpringDamper;
-            jDriveyz.positionDamper = jointSpringDamper;
-            cJoints[i].angularXDrive = jDrivex;
-            cJoints[i].angularYZDrive = jDriveyz;
+            SetJointParams(cJoints[i], jointSpringsStrength, jointSpringDamper);
             //Debug.Log("Springs set for "+cJoints[i]);
         }
+    }
+
+    void SetJointParams(ConfigurableJoint cj, float posSpring, float posDamper)
+    {
+        JointDrive jDrivex = cj.angularXDrive;
+        JointDrive jDriveyz = cj.angularYZDrive;
+        jDrivex.positionSpring = posSpring;
+        jDriveyz.positionSpring = posSpring;
+        jDrivex.positionDamper = posDamper;
+        jDriveyz.positionDamper = posDamper;
+        cj.angularXDrive = jDrivex;
+        cj.angularYZDrive = jDriveyz;
     }
 
     public void GoLimp()
     {
         for (int i = 0; i < cJoints.Length; i++) {
-            JointDrive jDrivex = cJoints[i].angularXDrive;
-            JointDrive jDriveyz = cJoints[i].angularYZDrive;
-            jDrivex.positionSpring = 0;
-            jDriveyz.positionSpring = 0;
-            cJoints[i].angularXDrive = jDrivex;
-            cJoints[i].angularYZDrive = jDriveyz;
+            SetJointParams(cJoints[i], 0, 0);
         }
         Debug.Log("Gone Limp!");
     }
@@ -186,17 +168,21 @@ public class Physicanimator : MonoBehaviour
         }
     }
 
-    void ToggleHipMovement(bool hiplock){
-        if(hiplock){
-            cJoints[0].xMotion = ConfigurableJointMotion.Limited;
-            cJoints[0].zMotion = ConfigurableJointMotion.Limited;
-            cJoints[0].yMotion = ConfigurableJointMotion.Limited;
-        }
-        else{
-            cJoints[0].xMotion = ConfigurableJointMotion.Free;
-            cJoints[0].zMotion = ConfigurableJointMotion.Free;
-            cJoints[0].yMotion = ConfigurableJointMotion.Free;
-        }
+    public void SetJointMotionType(ConfigurableJoint cj, ConfigurableJointMotion motionType, ConfigurableJointMotion angularMotionType)
+    {
+        if (cj == null) { cj = cJoints[0]; }    //if no cj give set to hips
+        cj.xMotion = motionType;
+        cj.zMotion = motionType;
+        cj.yMotion = motionType;
+        cj.angularXMotion = angularMotionType;
+        cj.angularYMotion = angularMotionType;
+        cj.angularZMotion = angularMotionType;
+    }
+
+    public void ResetStaticAnimPos()    //Set static anim pos to physicsbody pos
+    {
+        staticAnimRoot.position = new Vector3(ragdollBones[0].position.x, staticAnimRoot.position.y, ragdollBones[0].position.y);
+        animBones[0].position = ragdollBones[0].position;
     }
 
 }
