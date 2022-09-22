@@ -534,7 +534,7 @@ class ActiveRagdollBuilder : ScriptableWizard
     void SetupJointMatch(GameObject sAnimObj)
     {
         //Called at the end of CreateWizard(), after radgoll has been built. 
-        pelvis.transform.root.gameObject.AddComponent(typeof(Physicanimator));  //Joint Match class added to root object
+        pelvis.transform.root.gameObject.AddComponent<Physicanimator>();  //Joint Match class added to root object
         Physicanimator jm = pelvis.transform.root.GetComponent<Physicanimator>();
         
         jm.cJoints[0] = pelvis.gameObject.AddComponent<ConfigurableJoint>(); //Add pelvis char joint as first joint on cJoints list. ~*
@@ -548,21 +548,23 @@ class ActiveRagdollBuilder : ScriptableWizard
         marionette_rb.isKinematic = true;
         marionette_rb.useGravity = false;
         //Setup hip joint parameters
-        jm.cJoints[0].xMotion = ConfigurableJointMotion.Locked;
-        jm.cJoints[0].zMotion = ConfigurableJointMotion.Locked;
-        jm.cJoints[0].yMotion = ConfigurableJointMotion.Locked;
-        jm.cJoints[0].angularXMotion = ConfigurableJointMotion.Locked;
-        jm.cJoints[0].angularYMotion = ConfigurableJointMotion.Locked;
-        jm.cJoints[0].angularZMotion = ConfigurableJointMotion.Locked;
+        jm.cJoints[0].xMotion = ConfigurableJointMotion.Limited;
+        jm.cJoints[0].zMotion = ConfigurableJointMotion.Limited;
+        jm.cJoints[0].yMotion = ConfigurableJointMotion.Limited;
+        jm.cJoints[0].angularXMotion = ConfigurableJointMotion.Limited;
+        jm.cJoints[0].angularYMotion = ConfigurableJointMotion.Limited;
+        jm.cJoints[0].angularZMotion = ConfigurableJointMotion.Limited;
 
         jm.cJoints[0].connectedBody = marionette_rb;
+
+        //set linier limit
+        SoftJointLimit cjLinearLimit = jm.cJoints[0].linearLimit;
+        cjLinearLimit.limit = 0.001f;
+        jm.cJoints[0].linearLimit = cjLinearLimit;
         
-        //set linier limit spring
-        //SoftJointLimitSpring lmtSpr = jm.cJoints[0].linearLimitSpring;
         //lmtSpr.spring = 9999;
         //lmtSpr.damper = 420;
-        //jm.cJoints[0].linearLimitSpring = lmtSpr;
-        
+
 
         int bi = 0; //bi is the bone index.
         foreach (BoneInfo bone in bones)
