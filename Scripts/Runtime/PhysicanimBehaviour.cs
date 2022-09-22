@@ -146,6 +146,7 @@ public class PhysicanimBehaviour : MonoBehaviour
         {
             //TO DO: BEFORE SETTING LINEAR LIMIT 0, RESET ANIM HIPS POS
             //ResetStaticAnimPos();
+            
             //setting linear limit to 0 makes physanim rootmotion
             //tempLimit = cJoints[0].linearLimit;
             //tempLimit.limit = 0;
