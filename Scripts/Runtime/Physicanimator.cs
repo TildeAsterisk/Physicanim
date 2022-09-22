@@ -28,7 +28,6 @@ public class Physicanimator : MonoBehaviour
         //ToggleHipLock(limitHipMovement);
         //SetJointSprings();
         ShowStaticAnimMesh(showDEBUG);
-
     }
 
     // Start is called before the first frame update
@@ -53,13 +52,6 @@ public class Physicanimator : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        /*
-        if (jointsLerping && t <= 1)
-        {
-            LerpJointSprings(0.01f);
-        }
-        */
-
         UpdateJointTargets();
         //UpdateFeetTargets(); //NO IK YET
     }
@@ -77,18 +69,6 @@ public class Physicanimator : MonoBehaviour
         }
     }
 
-    //Match foot IK target pos to anim foot pos
-    private void UpdateFeetTargets()
-    {
-        //update iktarget position
-        //rFootTarget.position = rFootAnim.position;
-        //lFootTarget.position = lFootAnim.position;
-
-        //update IK target rotation
-        //rFootTarget.transform.eulerAngles = new Vector3(0, hips.eulerAngles.y, 0);
-        //lFootTarget.transform.eulerAngles = new Vector3(0, hips.eulerAngles.y, 0);
-    }
-
     void SetJointSprings()
     {
         //SetJointParams(cJoints[0], 0, 0);   //Set hip spring and damper to zero
@@ -100,7 +80,7 @@ public class Physicanimator : MonoBehaviour
         }
     }
 
-    void SetJointParams(ConfigurableJoint cj, float posSpring, float posDamper)
+    public void SetJointParams(ConfigurableJoint cj, float posSpring, float posDamper)
     {
         JointDrive jDrivex = cj.angularXDrive;
         JointDrive jDriveyz = cj.angularYZDrive;
@@ -112,123 +92,8 @@ public class Physicanimator : MonoBehaviour
         cj.angularYZDrive = jDriveyz;
     }
 
-    public void GoLimp()
-    {
-        Animator anim = staticAnimRoot.GetComponent<Animator>();
-        anim.CrossFade("Fetal Pose", 0.5f, 0, 0);
-        //anim.Play("Fetal Pose", 0,0);
-
-        SetJointParams(cJoints[0], 0.00001f, 0.00001f);
-        for (int i = 0; i < cJoints.Length; i++) {
-            //SetJointParams(cJoints[i], 0, 0);
-        }
-        //set joint limits
-        //SetJointMotionType(cJoints[0],ConfigurableJointMotion.Limited, ConfigurableJointMotion.Free);
-
-        //set linear limit for hips to 9999
-        SoftJointLimit tempLimit = cJoints[0].linearLimit;
-        tempLimit.limit = 999;
-        cJoints[0].linearLimit = tempLimit;
-        //set angularlimits
-        float maxlimit = 177f;
-        tempLimit = cJoints[0].lowAngularXLimit;
-        tempLimit.limit = -maxlimit;
-        cJoints[0].lowAngularXLimit = tempLimit;
-
-        tempLimit = cJoints[0].highAngularXLimit;
-        tempLimit.limit = maxlimit;
-        cJoints[0].highAngularXLimit = tempLimit;
-
-        tempLimit = cJoints[0].angularYLimit;
-        tempLimit.limit = maxlimit;
-        cJoints[0].angularYLimit = tempLimit;
-
-        tempLimit = cJoints[0].angularZLimit;
-        tempLimit.limit = maxlimit;
-        cJoints[0].angularZLimit = tempLimit;
-
-        limp = true;
-        Debug.Log("Gone Limp!");
-    }
-
-    public void GetUp()
-    {
-        SetJointParams(cJoints[0], jointSpringsStrength, jointSpringDamper);
-        for (int i = 0; i < cJoints.Length; i++)
-        {
-            //SetJointParams(cJoints[i], 0, 0);
-        }
-
-        float lerpSpeed = 1f;
-        float t = lerpSpeed * Time.fixedDeltaTime;
-        float maxAngLimit = 0;
-        //set linear limit for hips to 9999
-        SoftJointLimit tempLimit = cJoints[0].linearLimit;
-        if (cJoints[0].highAngularXLimit.limit > 1 )
-        {
-            //tempLimit.limit = 0;
-            //tempLimit.limit = Mathf.Lerp(tempLimit.limit, 0, t*2);
-            //cJoints[0].linearLimit = tempLimit;
-            //set angularlimits
-            tempLimit = cJoints[0].lowAngularXLimit;
-            tempLimit.limit = Mathf.Lerp(tempLimit.limit, -maxAngLimit, t);
-            cJoints[0].lowAngularXLimit = tempLimit;
-            tempLimit = cJoints[0].highAngularXLimit;
-            tempLimit.limit = Mathf.Lerp(tempLimit.limit, maxAngLimit, t);
-            cJoints[0].highAngularXLimit = tempLimit;
-            tempLimit = cJoints[0].angularYLimit;
-            tempLimit.limit = Mathf.Lerp(tempLimit.limit, maxAngLimit, t);
-            cJoints[0].angularYLimit = tempLimit;
-            tempLimit = cJoints[0].angularZLimit;
-            tempLimit.limit = Mathf.Lerp(tempLimit.limit, maxAngLimit, t);
-            cJoints[0].angularZLimit = tempLimit;
-        }
-        else
-        {
-            //set all to zero
-            //tempLimit.limit = 0;
-            //tempLimit.limit = 1;
-            //cJoints[0].linearLimit = tempLimit;
-            //set angularlimits
-            tempLimit = cJoints[0].lowAngularXLimit;
-            tempLimit.limit = -maxAngLimit;
-            cJoints[0].lowAngularXLimit = tempLimit;
-            tempLimit = cJoints[0].highAngularXLimit;
-            tempLimit.limit = maxAngLimit;
-            cJoints[0].highAngularXLimit = tempLimit;
-            tempLimit = cJoints[0].angularYLimit;
-            tempLimit.limit = maxAngLimit;
-            cJoints[0].angularYLimit = tempLimit;
-            tempLimit = cJoints[0].angularZLimit;
-            tempLimit.limit = maxAngLimit;
-            cJoints[0].angularZLimit = tempLimit;
-            limp = false;
-            Debug.Log("Finished Getting Up!");
-        }
-
-        //limp = false;
-        Debug.Log("Recovering...");
-    }
-
-    private bool jointsLerping;
-    public void Revive()
-    {
-        //start lerping
-        t = 0;
-        jointsLerping = true;
-        /*
-        for (int i = 0; i < cJoints.Length; i++)
-        {
-            JointDrive jDrivex = cJoints[i].angularXDrive;
-            JointDrive jDriveyz = cJoints[i].angularYZDrive;
-            jDrivex.positionSpring = initialJointSprings[i,0];
-            jDriveyz.positionSpring = initialJointSprings[i, 1];
-            cJoints[i].angularXDrive = jDrivex;
-            cJoints[i].angularYZDrive = jDriveyz;
-        }
-        */
-    }
-    
+    #region LerpJoints [Unused]
+    /*
     float t = 1;
     public void LerpJointSprings(float spd)
     {
@@ -252,6 +117,8 @@ public class Physicanimator : MonoBehaviour
             }
         }
     }
+    */
+#endregion
 
     void ShowStaticAnimMesh(bool enabled){
         SkinnedMeshRenderer sAnimMesh = animBones[0].parent.GetComponentInChildren<SkinnedMeshRenderer>();
@@ -283,8 +150,9 @@ public class Physicanimator : MonoBehaviour
 
     public void ResetStaticAnimPos()    //Set static anim pos to physicsbody pos
     {
-        staticAnimRoot.position = new Vector3(ragdollBones[0].position.x, staticAnimRoot.position.y, ragdollBones[0].position.y);
+        //staticAnimRoot.position = new Vector3(ragdollBones[0].parent.position.x, ragdollBones[0].parent.position.y, ragdollBones[0].parent.position.z);
         animBones[0].position = ragdollBones[0].position;
+        Debug.Log("Reset anim pos to physbody pos");
     }
 
 }

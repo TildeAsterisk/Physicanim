@@ -557,11 +557,14 @@ class ActiveRagdollBuilder : ScriptableWizard
 
         jm.cJoints[0].connectedBody = marionette_rb;
 
-        //set linier limit
+        //set linear limit
         SoftJointLimit cjLinearLimit = jm.cJoints[0].linearLimit;
-        cjLinearLimit.limit = 0.001f;
+        cjLinearLimit.limit = 0.0001f;
         jm.cJoints[0].linearLimit = cjLinearLimit;
-        
+        SoftJointLimitSpring lmtSpring = jm.cJoints[0].linearLimitSpring;
+        lmtSpring.spring = 0.0001f;
+        jm.cJoints[0].linearLimitSpring = lmtSpring;
+
         //lmtSpr.spring = 9999;
         //lmtSpr.damper = 420;
 
