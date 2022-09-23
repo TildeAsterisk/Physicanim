@@ -26,12 +26,9 @@ public class PhysicanimBehaviour : MonoBehaviour
         {
             Resilience();
         }
-        if (charAnim.GetCurrentAnimatorStateInfo(0).IsName("Getting Up"))
+        else if(physicAnim.limp && charAnim.GetCurrentAnimatorStateInfo(0).IsName("Getting Up"))
         {
-            //physAnim.ResetStaticAnimPos();
-            //physicAnim.GetUp();
             GetUp();
-
         }
         /*
         if (Input.GetKeyDown(KeyCode.Space) && physAnim.limp)
@@ -65,26 +62,20 @@ public class PhysicanimBehaviour : MonoBehaviour
     void FallDown()
     {
         Animator anim = physicAnim.staticAnimRoot.GetComponent<Animator>();
-        anim.CrossFade("Fetal Pose", 0.5f, 0, 0);
-        //anim.Play("Fetal Pose", 0,0);
+        anim.CrossFade("Fetal Pose", 0.5f, 0, 0);   //anim.Play("Fetal Pose", 0,0);
 
         physicAnim.SetJointParams(physicAnim.cJoints[0], 0.00001f, 0.00001f);
-        /*
+        /*// Set each joint spring and damper to 0
         for (int i = 0; i < cJoints.Length; i++)
         {
             SetJointParams(cJoints[i], 0, 0);
         }
         */
-        //set joint limits
-        //SetJointMotionType(cJoints[0],ConfigurableJointMotion.Limited, ConfigurableJointMotion.Free);
 
-        //set linear limit for hips to 9999
-        //SoftJointLimit tempLimit = cJoints[0].linearLimit;
-        //tempLimit.limit = 0.1f;
-        //cJoints[0].linearLimit = tempLimit;
-        //SoftJointLimitSpring lmtSpring = cJoints[0].linearLimitSpring;
-        //lmtSpring.spring = 0.00001f;
-        //cJoints[0].linearLimitSpring = lmtSpring;
+        //set hip linearlimit spring
+        //SoftJointLimitSpring lmtSpring = physicAnim.cJoints[0].linearLimitSpring;
+        //lmtSpring.spring = 0.0001f;
+        //physicAnim.cJoints[0].linearLimitSpring = lmtSpring;
 
         //set angularlimits
         float maxlimit = 177f;
@@ -109,11 +100,12 @@ public class PhysicanimBehaviour : MonoBehaviour
     }
     public void GetUp()
     {
-        physicAnim.SetJointParams(physicAnim.cJoints[0], physicAnim.jointSpringsStrength, physicAnim.jointSpringDamper);
+        /*
         for (int i = 0; i < physicAnim.cJoints.Length; i++)
         {
             //SetJointParams(cJoints[i], 0, 0);
         }
+        */
 
         float maxAngLimit = 0;
         float lerpSpeed = 1f;
@@ -123,10 +115,14 @@ public class PhysicanimBehaviour : MonoBehaviour
 
         if (physicAnim.cJoints[0].highAngularXLimit.limit > 0.34f)
         {
-            //lerp hip linearlimit spring
-            SoftJointLimitSpring lmtSpring = physicAnim.cJoints[0].linearLimitSpring;
-            lmtSpring.spring = Mathf.Lerp(lmtSpring.spring, 9999, t);
-            physicAnim.cJoints[0].linearLimitSpring = lmtSpring;
+            //Lerp joint X-YZ drive spring and
+            float lerpedDriveSpring = Mathf.Lerp(physicAnim.cJoints[0].angularXDrive.positionSpring, physicAnim.jointSpringsStrength, t/3);
+            physicAnim.SetJointParams(physicAnim.cJoints[0], lerpedDriveSpring, physicAnim.jointSpringDamper);
+
+            //lerp hip linearlimit spring [HIGH value brings physicHips to animHips]
+            //SoftJointLimitSpring lmtSpring = physicAnim.cJoints[0].linearLimitSpring;
+            //lmtSpring.spring = Mathf.Lerp(lmtSpring.spring, 9999, t);
+            //physicAnim.cJoints[0].linearLimitSpring = lmtSpring;
 
             //lerp angularlimits
             tempLimit = physicAnim.cJoints[0].lowAngularXLimit;
@@ -144,9 +140,11 @@ public class PhysicanimBehaviour : MonoBehaviour
         }
         else
         {
+            physicAnim.SetJointParams(physicAnim.cJoints[0], physicAnim.jointSpringsStrength, physicAnim.jointSpringDamper);
+
             //TO DO: BEFORE SETTING LINEAR LIMIT 0, RESET ANIM HIPS POS
             //ResetStaticAnimPos();
-            
+
             //setting linear limit to 0 makes physanim rootmotion
             //tempLimit = cJoints[0].linearLimit;
             //tempLimit.limit = 0;
@@ -183,15 +181,9 @@ public class PhysicanimBehaviour : MonoBehaviour
     {
         Vector3 feetCentrePoint = new Vector3((leftFoot.position.x+rightFoot.position.x)/2, (leftFoot.position.y + rightFoot.position.y) / 2, (leftFoot.position.z + rightFoot.position.z) / 2);
         Vector3 hipsXZ = new Vector3(hips.position.x, feetCentrePoint.y, hips.position.z);
-        //Debug.Log(Vector3.Distance(feetCentrePoint, hipsXZ));
         if (Vector3.Distance(feetCentrePoint, hipsXZ) >= maxDist)
         {
             Debug.Log("Off Balance!");
-            //physAnim.SetJointMotionType(null, ConfigurableJointMotion.Free, ConfigurableJointMotion.Free);
-            //set fetal position animation
-            //charAnim.CrossFade("FetalPosition",0.5f,0,0);
-
-            //physicAnim.GoLimp();
             FallDown();
         }
     }
