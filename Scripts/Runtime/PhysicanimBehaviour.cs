@@ -111,17 +111,17 @@ public class PhysicanimBehaviour : MonoBehaviour
         float lerpSpeed = 1f;
         float t = lerpSpeed * Time.fixedDeltaTime;
         //set linear limit for hips to 9999
-        SoftJointLimit tempLimit = physicAnim.cJoints[0].linearLimit;
+        SoftJointLimit tempLimit;
 
         if (physicAnim.cJoints[0].highAngularXLimit.limit > 0.34f)
         {
             //Lerp joint X-YZ drive spring and
-            float lerpedDriveSpring = Mathf.Lerp(physicAnim.cJoints[0].angularXDrive.positionSpring, physicAnim.jointSpringsStrength, t/3);
+            float lerpedDriveSpring = Mathf.Lerp(physicAnim.cJoints[0].angularXDrive.positionSpring, physicAnim.jointSpringsStrength, t/10);
             physicAnim.SetJointParams(physicAnim.cJoints[0], lerpedDriveSpring, physicAnim.jointSpringDamper);
 
             //lerp hip linearlimit spring [HIGH value brings physicHips to animHips]
             SoftJointLimitSpring lmtSpring = physicAnim.cJoints[0].linearLimitSpring;
-            lmtSpring.spring = Mathf.Lerp(lmtSpring.spring, 9999, t/4);
+            lmtSpring.spring = Mathf.Lerp(lmtSpring.spring, 9999, t/10);
             physicAnim.cJoints[0].linearLimitSpring = lmtSpring;
 
             //lerp angularlimits
@@ -143,12 +143,7 @@ public class PhysicanimBehaviour : MonoBehaviour
             physicAnim.SetJointParams(physicAnim.cJoints[0], physicAnim.jointSpringsStrength, physicAnim.jointSpringDamper);
 
             //TO DO: BEFORE SETTING LINEAR LIMIT 0, RESET ANIM HIPS POS
-            //ResetStaticAnimPos();
-
-            //setting linear limit to 0 makes physanim rootmotion
-            //tempLimit = cJoints[0].linearLimit;
-            //tempLimit.limit = 0;
-            //cJoints[0].linearLimit = tempLimit;
+            physicAnim.ResetStaticAnimPos();
 
             //set hip linearlimit spring
             SoftJointLimitSpring lmtSpring = physicAnim.cJoints[0].linearLimitSpring;

@@ -19,6 +19,7 @@ public class Physicanimator : MonoBehaviour
     public Transform staticAnimRoot;
     public bool limp;
     public bool showDEBUG;
+    public bool lockHipsToAnim;
 
     [SerializeField]
     PhysicanimCharacterBehaviour[] physicanimCharacterBehaviours;
@@ -28,6 +29,7 @@ public class Physicanimator : MonoBehaviour
         //ToggleHipLock(limitHipMovement);
         //SetJointSprings();
         ShowStaticAnimMesh(showDEBUG);
+        LockPhysicsHipsToAnimHips(lockHipsToAnim);
     }
 
     // Start is called before the first frame update
@@ -153,6 +155,22 @@ public class Physicanimator : MonoBehaviour
         //staticAnimRoot.position = new Vector3(ragdollBones[0].parent.position.x, ragdollBones[0].parent.position.y, ragdollBones[0].parent.position.z);
         animBones[0].position = ragdollBones[0].position;
         Debug.Log("Reset anim pos to physbody pos");
+    }
+
+    public void LockPhysicsHipsToAnimHips(bool hipLock)
+    {
+        if (hipLock)
+        {
+            SoftJointLimit tmplmt = cJoints[0].linearLimit;
+            tmplmt.limit = 0;
+            cJoints[0].linearLimit = tmplmt;
+        }
+        else
+        {
+            SoftJointLimit tmplmt = cJoints[0].linearLimit;
+            tmplmt.limit = 0.0001f;
+            cJoints[0].linearLimit = tmplmt;
+        }
     }
 
 }
