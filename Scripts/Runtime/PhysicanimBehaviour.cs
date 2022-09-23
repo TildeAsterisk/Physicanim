@@ -22,7 +22,7 @@ public class PhysicanimBehaviour : MonoBehaviour
     void FixedUpdate()
     {
         //if grounded
-        if (!physicAnim.limp)
+        if (!physicAnim.limp && !charAnim.GetCurrentAnimatorStateInfo(0).IsName("Getting Up"))
         {
             Resilience();
         }
@@ -73,9 +73,9 @@ public class PhysicanimBehaviour : MonoBehaviour
         */
 
         //set hip linearlimit spring
-        //SoftJointLimitSpring lmtSpring = physicAnim.cJoints[0].linearLimitSpring;
-        //lmtSpring.spring = 0.0001f;
-        //physicAnim.cJoints[0].linearLimitSpring = lmtSpring;
+        SoftJointLimitSpring lmtSpring = physicAnim.cJoints[0].linearLimitSpring;
+        lmtSpring.spring = 0.0001f;
+        physicAnim.cJoints[0].linearLimitSpring = lmtSpring;
 
         //set angularlimits
         float maxlimit = 177f;
@@ -120,9 +120,9 @@ public class PhysicanimBehaviour : MonoBehaviour
             physicAnim.SetJointParams(physicAnim.cJoints[0], lerpedDriveSpring, physicAnim.jointSpringDamper);
 
             //lerp hip linearlimit spring [HIGH value brings physicHips to animHips]
-            //SoftJointLimitSpring lmtSpring = physicAnim.cJoints[0].linearLimitSpring;
-            //lmtSpring.spring = Mathf.Lerp(lmtSpring.spring, 9999, t);
-            //physicAnim.cJoints[0].linearLimitSpring = lmtSpring;
+            SoftJointLimitSpring lmtSpring = physicAnim.cJoints[0].linearLimitSpring;
+            lmtSpring.spring = Mathf.Lerp(lmtSpring.spring, 9999, t/4);
+            physicAnim.cJoints[0].linearLimitSpring = lmtSpring;
 
             //lerp angularlimits
             tempLimit = physicAnim.cJoints[0].lowAngularXLimit;
