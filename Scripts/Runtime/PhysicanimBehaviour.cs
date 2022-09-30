@@ -4,18 +4,21 @@ using UnityEngine;
 
 public class PhysicanimBehaviour : MonoBehaviour
 {
-    public Transform leftFoot, rightFoot;
-    public Transform hips;
+    Physicanimator physicAnim;
+    Transform leftFoot, rightFoot;
+    Transform hips;
     [Range(0f, 5f)]
     public float maxDist = 0.7f;
-    Physicanimator physicAnim;
     Animator charAnim;
 
-    // Start is called before the first frame update
     void Start()
     {
-        physicAnim = hips.root.gameObject.GetComponent<Physicanimator>();
-        charAnim = hips.root.GetComponentInChildren<Animator>();
+        physicAnim = gameObject.GetComponent<Physicanimator>();
+        charAnim = gameObject.GetComponentInChildren<Animator>();
+        //Set bone tfs
+        leftFoot = physicAnim.ragdollBones[11];
+        rightFoot = physicAnim.ragdollBones[12];
+        hips = physicAnim.ragdollBones[0];
     }
 
     // Update is called once per frame
@@ -183,6 +186,7 @@ public class PhysicanimBehaviour : MonoBehaviour
         }
     }
 
+    /* 
     void OnDrawGizmosSelected()
     {
         Vector3 feetCentrePoint = new Vector3((leftFoot.position.x + rightFoot.position.x) / 2, (leftFoot.position.y + rightFoot.position.y) / 2, (leftFoot.position.z + rightFoot.position.z) / 2);
@@ -193,6 +197,7 @@ public class PhysicanimBehaviour : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(feetCentrePoint, 0.05f);
     }
+    */
 }
 
 [System.Serializable]
