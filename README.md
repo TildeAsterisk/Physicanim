@@ -1,10 +1,19 @@
 Physicanim by Tilde Asterisk ~*
 =======
-Physicanim is an advanced active ragdoll character toolkit for Unity Game Engine that allows you to convert your character into a procedurally animated physics simulated character, create and manage it's behvaiours.
+Physicanim is an advanced active ragdoll toolkit for Unity that allows for characters to play physics driven procedural animations. (Works with Mixamo.)
+Convert any humanoid character model into an active ragdoll with **ONE CLICK!** 
+Animate ragdolls.
+Advanced Physicanim Character.
+
+### Features:
+- Physicanim Ragdoll Builder
+- Physicanim Physics Body Animator
+- Physicanim Behaviours
+- Physicanim Character Controller
+- Advanced Physicanim Character
 
 .
 
-Physicanim is an advanced active ragdoll toolkit for Unity that allows for characters to play physics driven procedural animations. (Works with Mixamo.)
 .
 
 .
