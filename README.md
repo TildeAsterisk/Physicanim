@@ -6,7 +6,7 @@ Animate ragdolls.
 Advanced Physicanim Character.
 
 ### Features:
-- Physicanim Ragdoll Builder
+- Physicanim Active Ragdoll Builder
 - Physicanim Physics Body Animator
 - Physicanim Behaviours
 - Physicanim Character Controller
