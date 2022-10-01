@@ -1,7 +1,8 @@
-PhysicAnimata by Tilde Asterisk ~*
+Physicanim by Tilde Asterisk ~*
 =======
-Active Ragdoll Character Toolkit
-PhysicAnimata is an active ragdoll system that allows for characters to play physics driven animations. (Works with Mixamo.)
+Physicanim is an advanced active ragdoll character toolkit for Unity Game Engine that allows you to convert your character into a procedurally animated physics simulated character, create and manage it's behvaiours.
+
+Physicanim is an active ragdoll system that allows for characters to play physics driven animations. (Works with Mixamo.)
 
 .
 
