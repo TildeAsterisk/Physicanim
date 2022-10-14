@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
+//[System.Serializable]
 public class Physicanimator : MonoBehaviour
 {
     public Transform[] ragdollBones = new Transform[13];
@@ -15,22 +15,14 @@ public class Physicanimator : MonoBehaviour
     public float jointSpringDamper = 1;
     public float[,] initialJointSprings;
     public Material debugMat;
-    public Transform physicsBodyRoot;
+    //public Transform physicsBodyRoot;
     public Transform staticAnimRoot;
     public bool limp;
-    public bool showDEBUG;
+    bool showDEBUG = false;
     public bool lockHipsToAnim;
 
-    [SerializeField]
-    PhysicanimCharacterBehaviour[] physicanimCharacterBehaviours;
-
-    void OnValidate()
-    {
-        //ToggleHipLock(limitHipMovement);
-        //SetJointSprings();
-        ShowStaticAnimMesh(showDEBUG);
-        LockPhysicsHipsToAnimHips(lockHipsToAnim);
-    }
+    //[SerializeField]
+    //PhysicanimCharacterBehaviour[] physicanimCharacterBehaviours;
 
     // Start is called before the first frame update
     void Start()
@@ -55,7 +47,7 @@ public class Physicanimator : MonoBehaviour
     void FixedUpdate()
     {
         UpdateJointTargets();
-        //UpdateFeetTargets(); //NO IK YET
+        //ResetStaticAnimPos();   //Set position of static animator to physicsbody position.
     }
 
     //Matching the rotation of each cj to the animated bones.
@@ -150,11 +142,15 @@ public class Physicanimator : MonoBehaviour
         cj.angularZMotion = angularMotionType;
     }
 
+    //CAUSING PROBLEMS
     public void ResetStaticAnimPos()    //Set static anim pos to physicsbody pos
     {
-        //staticAnimRoot.position = new Vector3(ragdollBones[0].parent.position.x, ragdollBones[0].parent.position.y, ragdollBones[0].parent.position.z);
-        animBones[0].position = ragdollBones[0].position;
-        Debug.Log("Reset anim pos to physbody pos");
+        animBones[0].parent.localPosition = new Vector3(
+            ragdollBones[0].localPosition.x,
+            0.9648402f,
+            ragdollBones[0].localPosition.z);
+
+        //Debug.Log("Reset anim pos to physbody pos");
     }
 
     public void LockPhysicsHipsToAnimHips(bool hipLock)
@@ -168,7 +164,7 @@ public class Physicanimator : MonoBehaviour
         else
         {
             SoftJointLimit tmplmt = cJoints[0].linearLimit;
-            tmplmt.limit = 0.0001f;
+            tmplmt.limit = 9999f;
             cJoints[0].linearLimit = tmplmt;
         }
     }
