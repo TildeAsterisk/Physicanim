@@ -153,6 +153,13 @@ public class Physicanimator : MonoBehaviour
         //Debug.Log("Reset anim pos to physbody pos");
     }
 
+    public void SetHipLimitSpring(int hipSpring)
+    {
+        SoftJointLimitSpring tmplmt = cJoints[0].linearLimitSpring;
+        tmplmt.spring = hipSpring;
+        cJoints[0].linearLimitSpring = tmplmt;
+    }
+
     public void LockPhysicsHipsToAnimHips(bool hipLock)
     {
         if (hipLock)
