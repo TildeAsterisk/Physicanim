@@ -41,6 +41,7 @@ public class Physicanimator : MonoBehaviour
 
         //UpdateFeetTargets(); //NO IK YET
         ShowStaticAnimMesh(showDEBUG);
+        LockPhysicsHipsToAnimHips(lockHipsToAnim);
     }
 
     // Update is called once per frame
@@ -171,7 +172,7 @@ public class Physicanimator : MonoBehaviour
         else
         {
             SoftJointLimit tmplmt = cJoints[0].linearLimit;
-            tmplmt.limit = 9999f;
+            tmplmt.limit = 0.001f;
             cJoints[0].linearLimit = tmplmt;
         }
     }
