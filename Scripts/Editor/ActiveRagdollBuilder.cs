@@ -162,13 +162,13 @@ class ActiveRagdollBuilder : ScriptableWizard
         rootBone.density = 2.5F;
         bones.Add(rootBone);
 
-        AddMirroredJoint("Hips", leftHips, rightHips, "Pelvis", worldRight, worldForward, -20, 70, 30, typeof(CapsuleCollider), 0.3F, 1.5F);
-        AddMirroredJoint("Knee", leftKnee, rightKnee, "Hips", worldRight, worldForward, -80, 0, 0, typeof(CapsuleCollider), 0.25F, 1.5F);
+        AddMirroredJoint("Hips", leftHips, rightHips, "Pelvis", worldRight, worldForward, -20, 70, 30, typeof(CapsuleCollider), 0.2F, 1.5F);
+        AddMirroredJoint("Knee", leftKnee, rightKnee, "Hips", worldRight, worldForward, -80, 0, 0, typeof(CapsuleCollider), 0.15F, 1.5F);
 
         AddJoint("Middle Spine", middleSpine, "Pelvis", worldRight, worldForward, -20, 20, 10, null, 1, 2.5F);
 
         AddMirroredJoint("Arm", leftArm, rightArm, "Middle Spine", worldUp, worldForward, -70, 10, 50, typeof(CapsuleCollider), 0.25F, 1.0F);
-        AddMirroredJoint("Elbow", leftElbow, rightElbow, "Arm", worldForward, worldUp, -90, 0, 0, typeof(CapsuleCollider), 0.20F, 1.0F);
+        AddMirroredJoint("Elbow", leftElbow, rightElbow, "Arm", worldForward, worldUp, -90, 0, 0, typeof(CapsuleCollider), 0.15F, 1.0F);
 
         AddJoint("Head", head, "Middle Spine", worldRight, worldForward, -40, 25, 25, null, 1, 1.0F);
     }
@@ -562,7 +562,8 @@ class ActiveRagdollBuilder : ScriptableWizard
         cjLinearLimit.limit = 0.0001f;
         jm.cJoints[0].linearLimit = cjLinearLimit;
         SoftJointLimitSpring lmtSpring = jm.cJoints[0].linearLimitSpring;
-        lmtSpring.spring = 0.0001f;
+        lmtSpring.spring = 4200;
+        lmtSpring.damper = 28.0799f;
         jm.cJoints[0].linearLimitSpring = lmtSpring;
 
         //lmtSpr.spring = 9999;
