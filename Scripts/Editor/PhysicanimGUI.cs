@@ -18,9 +18,7 @@ public class PhysicanimGUI : EditorWindow
 
     void OnGUI()
     {
-        //Selected Object Fields
-        GUILayout.Label("Physicanim Control Panel", EditorStyles.boldLabel);
-        GUILayout.Box("Please select a rigged character model to be converted into an Physicanim active ragdoll.");
+        //GUILayout.Label("Physicanim Control Panel", EditorStyles.boldLabel);
         //selectedObj = EditorGUILayout.ObjectField("Selected Object",Selection.activeObject, typeof(Object),true);
         charModelObj = (GameObject)EditorGUILayout.ObjectField("Character Model:",Selection.activeGameObject, typeof(GameObject),true);
 
@@ -34,12 +32,14 @@ public class PhysicanimGUI : EditorWindow
         { GUI.enabled = true; }
         else { GUI.enabled = false; }
         
+        GUILayout.Label("", EditorStyles.boldLabel);
+
         /* //Shows Animator and Avatar component on current object if there is one.
         Animator charAnimField = (Animator)EditorGUILayout.ObjectField("Animator:",charAnim,typeof(Animator),true);
         Avatar avField = (Avatar)EditorGUILayout.ObjectField("Avatar (e.g: Rig, Skeleton):", charRig, typeof(Avatar),true);
         */
 
-        if (GUILayout.Button("Create Active Ragdoll"))
+        if (GUILayout.Button("Create\nPhysicanim Character"))
         {
             //Depending on ARagBuilder reference, could open window or not.
             //ActiveRagdollBuilder rdBuilder = ScriptableWizard.DisplayWizard<ActiveRagdollBuilder>("~* Active Ragdoll Builder");
@@ -65,6 +65,30 @@ public class PhysicanimGUI : EditorWindow
             rdBuilder.OnWizardCreate(); //Create ragdoll using wizard
         }
         GUI.enabled = true;
+
+
+        string winmsg;
+        MessageType msgtype;
+        if (charRig){
+            winmsg = "Click the button to convert this character model into a Physicanim Character ~*";
+            msgtype = MessageType.Info;
+        }
+        else{
+            winmsg = "Please select a character model with a humanoid rig from the heirarchy and click the button.";
+            msgtype = MessageType.Warning;
+        }
+
+        GUILayout.FlexibleSpace();  //positions the helpbox to the bottom of the editorwindow
+        EditorGUILayout.HelpBox(winmsg, msgtype);
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.FlexibleSpace();
+        GUILayout.Label("Physicanim by Tilde Asterisk ~* (2022)", EditorStyles.miniLabel);
+        //GUIStyle style = new GUIStyle() { richText = true };
+        //EditorGUILayout.TextField("Physicanim by Tilde Asterisk <a href='https://www.tildeasterisk.com/'>~*</a> (2022)", style);
+        //GUILayout.Label("Physicanim by Tilde Asterisk <a href='https://www.tildeasterisk.com/'>~*OOOOOOOO</a> (2022)", style);
+        EditorGUILayout.EndHorizontal();
+
+        //EditorGUILayout.HelpBox("Please select a humanoid rigged character model and click the button below to create a Physicanim Character.", MessageType.None);
     }
 
     //Get the avatar from any charactermodel. in scene or assets
